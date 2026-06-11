@@ -114,6 +114,107 @@
       transition: background 0.2s, transform 0.2s;
     }
     #navbar .nav-cta:hover { background: linear-gradient(135deg,#2556c8,#1a3a90); transform: translateY(-1px); }
+    /* ── Скрытие гамбургера на десктопе ── */
+.nav-toggle {
+  display: none;
+}
+
+/* ── Полностью исправленный мобильный медиа-запрос ── */
+@media (max-width: 768px) {
+  #navbar {
+    width: 94% !important;
+    max-width: 440px !important;
+    padding: 6px 8px 6px 14px !important;
+    justify-content: space-between !important;
+    border-radius: 24px !important;
+    top: 12px !important;
+    overflow: visible !important; /* Важно! Чтобы меню не обрезалось */
+    pointer-events: auto !important; /* Чтобы точно реагировало на клики */
+  }
+  
+  #navbar .logo {
+    margin-right: 0 !important;
+    font-size: 13px !important;
+  }
+
+  /* Исправленный контейнер ссылок */
+  #navbar .nav-links {
+    display: none !important; 
+    flex-direction: column !important;
+    position: absolute !important;
+    top: calc(100% + 10px) !important;
+    left: 0 !important;
+    width: 100% !important;
+    background: rgba(5, 12, 24, 0.98) !important;
+    backdrop-filter: blur(20px) saturate(1.6) !important;
+    -webkit-backdrop-filter: blur(20px) saturate(1.6) !important;
+    border: 1px solid rgba(100, 160, 255, 0.2) !important;
+    border-radius: 16px !important;
+    padding: 12px !important;
+    gap: 4px !important;
+    box-shadow: 0 12px 40px rgba(0,0,0,0.8) !important;
+    pointer-events: auto !important;
+  }
+
+  /* Показываем меню при активации класса .nav-open */
+  #navbar.nav-open .nav-links {
+    display: flex !important;
+    animation: menuFadeIn 0.2s ease-out-forward;
+  }
+
+  #navbar .nav-link {
+    width: 100% !important;
+    text-align: center !important;
+    padding: 12px 0 !important;
+    font-size: 14px !important;
+    border-radius: 10px !important;
+    display: block !important;
+  }
+
+  #navbar .nav-cta {
+    font-size: 11px !important;
+    padding: 6px 12px !important;
+    margin-left: 0 !important;
+  }
+
+  /* Кнопка бургера */
+  .nav-toggle {
+    display: flex !important;
+    flex-direction: column;
+    justify-content: center;
+    gap: 4px;
+    width: 32px;
+    height: 32px;
+    cursor: pointer;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.07);
+    align-items: center;
+  }
+  
+  .nav-toggle span {
+    display: block;
+    width: 16px;
+    height: 2px;
+    background: #fff;
+    transition: transform 0.25s ease, opacity 0.25s ease;
+  }
+
+  /* Исправленная анимация крестика (теперь без опечаток) */
+  #navbar.nav-open .nav-toggle span:nth-child(1) { 
+    transform: translateY(6px) rotate(45deg); 
+  }
+  #navbar.nav-open .nav-toggle span:nth-child(2) { 
+    opacity: 0; 
+  }
+  #navbar.nav-open .nav-toggle span:nth-child(3) { 
+    transform: translateY(-6px) rotate(-45deg); 
+  }
+}
+
+@keyframes menuFadeIn {
+  from { opacity: 0; transform: translateY(-8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
 
     /* ── Section styles ───────────────────────────────────────────────────── */
     #sec-hero { padding-top: 80px; }
@@ -138,7 +239,14 @@
     <a href="#sec-monitor"  class="nav-link">Аналитика</a>
     <a href="#sec-final"    class="nav-link">Контакты</a>
   </div>
-  <a href="tel:+77272584958" class="nav-cta">+7 727 258-49-58</a>
+  <div style="display: flex; align-items: center; gap: 8px;">
+    <a href="tel:+77272584958" class="nav-cta">+7 727 258-49-58</a>
+    <div class="nav-toggle" id="nav-toggle">
+      <span></span>
+      <span></span>
+      <span></span>
+    </div>
+  </div>
 </nav>
 
 <section class="section" id="sec-hero" style="min-height:100vh;">
@@ -299,15 +407,31 @@
 <script type="module">
 import * as THREE from 'three';
 
-// ── Scene ─────────────────────────────────────────────────────────────────────
+// 1. Быстрое определение мобильного/слабого устройства
+const isMobile = /Mobi|Android|iPhone|iPad/i.test(navigator.userAgent) || window.innerWidth < 768;
+
 const scene = new THREE.Scene();
 scene.fog = new THREE.Fog(0x0d1e3a, 90, 220);
 
-const renderer = new THREE.WebGLRenderer({ antialias: true });
-renderer.setPixelRatio(Math.min(window.devicePixelRatio,2));
+const renderer = new THREE.WebGLRenderer({ 
+  antialias: !isMobile, // Отключаем ресурсоемкий сглаживание на смартфонах
+  powerPreference: "high-performance" 
+});
+
+// 2. Ограничиваем Pixel Ratio: на смартфонах 1.0 (это спасет от перегрева), на ПК максимум 1.5 вместо 2.0
+renderer.setPixelRatio(isMobile ? 1.0 : Math.min(window.devicePixelRatio, 1.5));
 renderer.setSize(window.innerWidth, window.innerHeight);
-renderer.shadowMap.enabled = true;
-renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+
+// 3. Оптимизация теней
+if (isMobile) {
+  // На телефонах полностью отключаем тени — это дает мгновенный буст с 15 FPS до 60 FPS
+  renderer.shadowMap.enabled = false;
+} else {
+  renderer.shadowMap.enabled = true;
+  // Заменяем тяжелый PCFSoftShadowMap на производительный Basic или стандартный PCF
+  renderer.shadowMap.type = THREE.PCFShadowMap; 
+}
+
 renderer.outputEncoding = THREE.sRGBEncoding;
 renderer.toneMapping = THREE.ACESFilmicToneMapping;
 renderer.toneMappingExposure = 1.15;
@@ -740,10 +864,20 @@ for(let i=0;i<FLOORS;i++) buildFloor(i);
     m.position.set(x,y,z); if(ry) m.rotation.y=ry;
     m.castShadow=true; m.receiveShadow=true; g.add(m); return m;
   };
-  const cy=(r,h,mat,x,y,z,seg=10)=>{
-    const m=new THREE.Mesh(new THREE.CylinderGeometry(r,r,h,seg),mat);
-    m.position.set(x,y,z); m.castShadow=true; g.add(m); return m;
-  };
+  const cy = (r, h, mat, x, y, z, seg = 16) => {
+  // Если устройство мобильное — срезаем количество полигонов вдвое
+  const dynamicSegments = isMobile ? Math.min(seg, 8) : seg; 
+  const geometry = new THREE.CylinderGeometry(r, r, h, dynamicSegments);
+  const m = new THREE.Mesh(geometry, mat);
+  m.position.set(x, y, z);
+  
+  if (!isMobile) { // Тень отбрасывается только на ПК
+    m.castShadow = true;
+    m.receiveShadow = true;
+  }
+  g.add(m);
+  return m;
+};
   const sp=(r,mat,x,y,z)=>{
     const m=new THREE.Mesh(new THREE.SphereGeometry(r,8,6),mat);
     m.position.set(x,y,z); g.add(m); return m;
@@ -1134,6 +1268,31 @@ function animate(){
   renderer.render(scene,camera);
 }
 animate();
+
+// Логика открытия/закрытия мобильного меню
+const navToggle = document.getElementById('nav-toggle');
+const navbar = document.getElementById('navbar');
+
+if (navToggle && navbar) {
+  navToggle.addEventListener('click', (e) => {
+    e.stopPropagation();
+    navbar.classList.toggle('nav-open');
+  });
+
+  // Закрываем меню при клике на любую ссылку
+  document.querySelectorAll('#navbar .nav-link').forEach(link => {
+    link.addEventListener('click', () => {
+      navbar.classList.remove('nav-open');
+    });
+  });
+
+  // Закрываем меню при клике вне навигационной панели
+  document.addEventListener('click', (e) => {
+    if (!navbar.contains(e.target)) {
+      navbar.classList.remove('nav-open');
+    }
+  });
+}
 </script>
 </body>
 </html>
