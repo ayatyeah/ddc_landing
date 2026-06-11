@@ -46,35 +46,8 @@
     .caption-card p  { font-size: 12.5px; line-height: 1.65; color: rgba(200,220,255,0.72); }
     .caption-right { margin-left: auto; }
 
-    #sec-final {
-      flex-direction: column; justify-content: center; align-items: center; text-align: center; padding: 0 20px;
-      background: linear-gradient(to top, rgba(5,12,24,0.95) 0%, rgba(5,12,24,0.0) 100%);
-    }
-    #sec-final h2 { font-size: clamp(28px,4vw,52px); font-weight: 700; margin-bottom: 16px; }
-    #sec-final p  { font-size: 17px; color: rgba(200,220,255,0.65); max-width: 460px; line-height: 1.7; }
-    #sec-final .cta-btn {
-      pointer-events: auto; margin-top: 36px; display: inline-block; padding: 14px 38px;
-      background: linear-gradient(135deg,#1a4aaa,#0a2a70); border: 1px solid rgba(100,160,255,0.4);
-      border-radius: 8px; color: #fff; font-size: 15px; font-weight: 600; letter-spacing: 0.04em;
-      text-decoration: none; box-shadow: 0 4px 24px rgba(20,80,200,0.35); transition: all 0.25s;
-    }
-    #sec-final .cta-btn:hover { background: linear-gradient(135deg,#2a5acc,#1a3a90); transform: translateY(-2px); }
+    #progress { position: fixed; top: 0; left: 0; height: 2px; z-index: 20; background: linear-gradient(to right,#1a4aaa,#c8960c); width: 0%; }
 
-    #controls-hint {
-      position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%);
-      color: rgba(255,255,255,0.0); font-size: 12px; letter-spacing: 0.08em;
-      text-align: center; pointer-events: none; text-shadow: 0 1px 4px rgba(0,0,0,0.8);
-      transition: color 1.2s ease; z-index: 10;
-    }
-    #controls-hint.show { color: rgba(255,255,255,0.45); }
-    #controls-hint span { margin: 0 10px; }
-
-    #progress {
-      position: fixed; top: 0; left: 0; height: 2px; z-index: 20;
-      background: linear-gradient(to right,#1a4aaa,#c8960c); width: 0%;
-    }
-
-    /* ── Floating pill navbar ─────────────────────────────────────────────── */
     #navbar {
       position: fixed; top: 18px; left: 50%; transform: translateX(-50%);
       z-index: 50; display: flex; align-items: center; gap: 6px;
@@ -84,141 +57,34 @@
       border: 1px solid rgba(100,160,255,0.18);
       border-radius: 40px; padding: 7px 10px 7px 18px;
       box-shadow: 0 4px 32px rgba(0,0,0,0.45), 0 0 0 1px rgba(255,255,255,0.04) inset;
-      pointer-events: auto;
-      white-space: nowrap;
+      pointer-events: auto; white-space: nowrap;
     }
-    #navbar .logo {
-      font-size: 13px; font-weight: 700; letter-spacing: 0.06em;
-      color: #fff; margin-right: 10px; display: flex; align-items: center; gap: 8px;
-    }
-    #navbar .logo-dot {
-      width: 8px; height: 8px; border-radius: 50%;
-      background: linear-gradient(135deg,#1a6aff,#c8960c);
-      flex-shrink: 0;
-    }
+    #navbar .logo { font-size: 13px; font-weight: 700; letter-spacing: 0.06em; color: #fff; margin-right: 10px; display: flex; align-items: center; gap: 8px; }
+    #navbar .logo-dot { width: 8px; height: 8px; border-radius: 50%; background: linear-gradient(135deg,#1a6aff,#c8960c); flex-shrink: 0; }
     #navbar .nav-links { display: flex; align-items: center; gap: 2px; }
-    #navbar .nav-link {
-      font-size: 12.5px; font-weight: 500; letter-spacing: 0.02em;
-      color: rgba(200,220,255,0.72); text-decoration: none;
-      padding: 6px 14px; border-radius: 30px;
-      transition: background 0.2s, color 0.2s;
-    }
+    #navbar .nav-link { font-size: 12.5px; font-weight: 500; letter-spacing: 0.02em; color: rgba(200,220,255,0.72); text-decoration: none; padding: 6px 14px; border-radius: 30px; transition: background 0.2s, color 0.2s; }
     #navbar .nav-link:hover { background: rgba(100,160,255,0.14); color: #fff; }
     #navbar .nav-link.active { background: rgba(100,160,255,0.18); color: #fff; }
-    #navbar .nav-cta {
-      font-size: 12.5px; font-weight: 600; letter-spacing: 0.03em;
-      color: #fff; text-decoration: none;
-      padding: 7px 18px; border-radius: 30px; margin-left: 4px;
-      background: linear-gradient(135deg,#1a4aaa,#0d2e78);
-      border: 1px solid rgba(100,160,255,0.35);
-      transition: background 0.2s, transform 0.2s;
-    }
+    #navbar .nav-cta { font-size: 12.5px; font-weight: 600; letter-spacing: 0.03em; color: #fff; text-decoration: none; padding: 7px 18px; border-radius: 30px; margin-left: 4px; background: linear-gradient(135deg,#1a4aaa,#0d2e78); border: 1px solid rgba(100,160,255,0.35); transition: background 0.2s, transform 0.2s; }
     #navbar .nav-cta:hover { background: linear-gradient(135deg,#2556c8,#1a3a90); transform: translateY(-1px); }
-    /* ── Скрытие гамбургера на десктопе ── */
-.nav-toggle {
-  display: none;
-}
 
-/* ── Полностью исправленный мобильный медиа-запрос ── */
-@media (max-width: 768px) {
-  #navbar {
-    width: 94% !important;
-    max-width: 440px !important;
-    padding: 6px 8px 6px 14px !important;
-    justify-content: space-between !important;
-    border-radius: 24px !important;
-    top: 12px !important;
-    overflow: visible !important; /* Важно! Чтобы меню не обрезалось */
-    pointer-events: auto !important; /* Чтобы точно реагировало на клики */
-  }
-  
-  #navbar .logo {
-    margin-right: 0 !important;
-    font-size: 13px !important;
-  }
+    .nav-toggle { display: none; }
 
-  /* Исправленный контейнер ссылок */
-  #navbar .nav-links {
-    display: none !important; 
-    flex-direction: column !important;
-    position: absolute !important;
-    top: calc(100% + 10px) !important;
-    left: 0 !important;
-    width: 100% !important;
-    background: rgba(5, 12, 24, 0.98) !important;
-    backdrop-filter: blur(20px) saturate(1.6) !important;
-    -webkit-backdrop-filter: blur(20px) saturate(1.6) !important;
-    border: 1px solid rgba(100, 160, 255, 0.2) !important;
-    border-radius: 16px !important;
-    padding: 12px !important;
-    gap: 4px !important;
-    box-shadow: 0 12px 40px rgba(0,0,0,0.8) !important;
-    pointer-events: auto !important;
-  }
+    @media (max-width: 768px) {
+      #navbar { width: 94% !important; max-width: 440px !important; padding: 6px 8px 6px 14px !important; justify-content: space-between !important; border-radius: 24px !important; top: 12px !important; overflow: visible !important; }
+      #navbar .logo { margin-right: 0 !important; }
+      #navbar .nav-links { display: none !important; flex-direction: column !important; position: absolute !important; top: calc(100% + 10px) !important; left: 0 !important; width: 100% !important; background: rgba(5,12,24,0.98) !important; backdrop-filter: blur(20px) !important; border: 1px solid rgba(100,160,255,0.2) !important; border-radius: 16px !important; padding: 12px !important; gap: 4px !important; box-shadow: 0 12px 40px rgba(0,0,0,0.8) !important; pointer-events: auto !important; }
+      #navbar.nav-open .nav-links { display: flex !important; }
+      #navbar .nav-link { width: 100% !important; text-align: center !important; padding: 12px 0 !important; font-size: 14px !important; border-radius: 10px !important; display: block !important; }
+      #navbar .nav-cta { font-size: 11px !important; padding: 6px 12px !important; margin-left: 0 !important; }
+      .nav-toggle { display: flex !important; flex-direction: column; justify-content: center; gap: 4px; width: 32px; height: 32px; cursor: pointer; border-radius: 50%; background: rgba(255,255,255,0.07); align-items: center; }
+      .nav-toggle span { display: block; width: 16px; height: 2px; background: #fff; transition: transform 0.25s ease, opacity 0.25s ease; }
+      #navbar.nav-open .nav-toggle span:nth-child(1) { transform: translateY(6px) rotate(45deg); }
+      #navbar.nav-open .nav-toggle span:nth-child(2) { opacity: 0; }
+      #navbar.nav-open .nav-toggle span:nth-child(3) { transform: translateY(-6px) rotate(-45deg); }
+    }
 
-  /* Показываем меню при активации класса .nav-open */
-  #navbar.nav-open .nav-links {
-    display: flex !important;
-    animation: menuFadeIn 0.2s ease-out-forward;
-  }
-
-  #navbar .nav-link {
-    width: 100% !important;
-    text-align: center !important;
-    padding: 12px 0 !important;
-    font-size: 14px !important;
-    border-radius: 10px !important;
-    display: block !important;
-  }
-
-  #navbar .nav-cta {
-    font-size: 11px !important;
-    padding: 6px 12px !important;
-    margin-left: 0 !important;
-  }
-
-  /* Кнопка бургера */
-  .nav-toggle {
-    display: flex !important;
-    flex-direction: column;
-    justify-content: center;
-    gap: 4px;
-    width: 32px;
-    height: 32px;
-    cursor: pointer;
-    border-radius: 50%;
-    background: rgba(255, 255, 255, 0.07);
-    align-items: center;
-  }
-  
-  .nav-toggle span {
-    display: block;
-    width: 16px;
-    height: 2px;
-    background: #fff;
-    transition: transform 0.25s ease, opacity 0.25s ease;
-  }
-
-  /* Исправленная анимация крестика (теперь без опечаток) */
-  #navbar.nav-open .nav-toggle span:nth-child(1) { 
-    transform: translateY(6px) rotate(45deg); 
-  }
-  #navbar.nav-open .nav-toggle span:nth-child(2) { 
-    opacity: 0; 
-  }
-  #navbar.nav-open .nav-toggle span:nth-child(3) { 
-    transform: translateY(-6px) rotate(-45deg); 
-  }
-}
-
-@keyframes menuFadeIn {
-  from { opacity: 0; transform: translateY(-8px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-    /* ── Section styles ───────────────────────────────────────────────────── */
     #sec-hero { padding-top: 80px; }
-
   </style>
 </head>
 <body>
@@ -226,26 +92,18 @@
 <div id="progress"></div>
 <div id="canvas-wrap"></div>
 
-<!-- Floating pill navbar -->
 <nav id="navbar">
-  <div class="logo">
-    <div class="logo-dot"></div>
-    DDC
-  </div>
+  <div class="logo"><div class="logo-dot"></div>DDC</div>
   <div class="nav-links">
-    <a href="#sec-hero"     class="nav-link active">Главная</a>
-    <a href="#sec-about"    class="nav-link">О нас</a>
-    <a href="#sec-board"    class="nav-link">Услуги</a>
-    <a href="#sec-monitor"  class="nav-link">Аналитика</a>
-    <a href="#sec-final"    class="nav-link">Контакты</a>
+    <a href="#sec-hero"    class="nav-link active">Главная</a>
+    <a href="#sec-about"   class="nav-link">О нас</a>
+    <a href="#sec-board"   class="nav-link">Услуги</a>
+    <a href="#sec-monitor" class="nav-link">Аналитика</a>
+    <a href="#sec-final"   class="nav-link">Контакты</a>
   </div>
-  <div style="display: flex; align-items: center; gap: 8px;">
+  <div style="display:flex;align-items:center;gap:8px;">
     <a href="tel:+77272584958" class="nav-cta">+7 727 258-49-58</a>
-    <div class="nav-toggle" id="nav-toggle">
-      <span></span>
-      <span></span>
-      <span></span>
-    </div>
+    <div class="nav-toggle" id="nav-toggle"><span></span><span></span><span></span></div>
   </div>
 </nav>
 
@@ -282,117 +140,37 @@
   </div>
 </section>
 
-<!-- Final screen: monitor shell + contact form overlay -->
-<section class="section" id="sec-final" style="
-  min-height:100vh; flex-direction:column; justify-content:center; align-items:center;
-  padding:80px 6vw 40px; background:rgba(5,12,24,0.0); pointer-events:none;
-">
-  <!-- Monitor wrapper -->
-  <div id="contact-card" style="
-    position:relative;
-    width: min(500px, 90vw);
-    pointer-events:auto;
-    opacity:0; transform:translateY(24px);
-    transition:opacity 0.7s ease, transform 0.7s ease;
-    filter: drop-shadow(0 0 40px rgba(26,63,255,0.30)) drop-shadow(0 0 80px rgba(26,63,255,0.12));
-  ">
-    <!-- Monitor bezel top bar -->
-    <div style="
-      background:linear-gradient(180deg,#121e2e 0%,#0c1622 100%);
-      border:1.5px solid rgba(60,110,200,0.30);
-      border-bottom:none;
-      border-radius:10px 10px 0 0;
-      padding:9px 12px 7px;
-      display:flex; align-items:center; gap:6px;
-    ">
+<section class="section" id="sec-final" style="min-height:100vh;flex-direction:column;justify-content:center;align-items:center;padding:80px 6vw 40px;background:rgba(5,12,24,0.0);pointer-events:none;">
+  <div id="contact-card" style="position:relative;width:min(500px,90vw);pointer-events:auto;opacity:0;transform:translateY(24px);transition:opacity 0.7s ease,transform 0.7s ease;filter:drop-shadow(0 0 40px rgba(26,63,255,0.30)) drop-shadow(0 0 80px rgba(26,63,255,0.12));">
+    <div style="background:linear-gradient(180deg,#121e2e 0%,#0c1622 100%);border:1.5px solid rgba(60,110,200,0.30);border-bottom:none;border-radius:10px 10px 0 0;padding:9px 12px 7px;display:flex;align-items:center;gap:6px;">
       <div style="width:8px;height:8px;border-radius:50%;background:#ff5f57;opacity:0.9;flex-shrink:0;"></div>
       <div style="width:8px;height:8px;border-radius:50%;background:#febc2e;opacity:0.9;flex-shrink:0;"></div>
       <div style="width:8px;height:8px;border-radius:50%;background:#28c840;opacity:0.9;flex-shrink:0;"></div>
-      <div style="flex:1;text-align:center;font-size:9.5px;letter-spacing:0.12em;color:rgba(160,200,255,0.35);margin-right:22px;overflow:hidden;white-space:nowrap;">
-        ccr.nationalbank.kz — Обратная связь
-      </div>
+      <div style="flex:1;text-align:center;font-size:9.5px;letter-spacing:0.12em;color:rgba(160,200,255,0.35);margin-right:22px;overflow:hidden;white-space:nowrap;">ccr.nationalbank.kz — Обратная связь</div>
     </div>
-
-    <!-- Screen body -->
-    <div style="
-      background:linear-gradient(160deg,#030c1c 0%,#050f20 100%);
-      border:1.5px solid rgba(60,110,200,0.30);
-      border-top:1px solid rgba(60,110,200,0.15);
-      border-bottom:none;
-      padding:22px 24px 20px;
-    ">
-      <!-- Scanline overlay -->
-      <div style="
-        position:absolute; inset:0; pointer-events:none;
-        background:repeating-linear-gradient(0deg,transparent,transparent 3px,rgba(0,30,80,0.04) 3px,rgba(0,30,80,0.04) 4px);
-        border-radius:10px 10px 0 0;
-      "></div>
-
+    <div style="background:linear-gradient(160deg,#030c1c 0%,#050f20 100%);border:1.5px solid rgba(60,110,200,0.30);border-top:1px solid rgba(60,110,200,0.15);border-bottom:none;padding:22px 24px 20px;">
+      <div style="position:absolute;inset:0;pointer-events:none;background:repeating-linear-gradient(0deg,transparent,transparent 3px,rgba(0,30,80,0.04) 3px,rgba(0,30,80,0.04) 4px);border-radius:10px 10px 0 0;"></div>
       <div style="font-size:8px;letter-spacing:0.24em;text-transform:uppercase;color:#c8960c;margin-bottom:6px;">● Центр Цифрового Развития НБК</div>
       <h2 style="font-size:clamp(16px,2.2vw,22px);font-weight:700;margin-bottom:4px;line-height:1.2;">Напишите нам</h2>
       <p style="font-size:11px;color:rgba(200,220,255,0.45);line-height:1.5;margin-bottom:14px;">г. Астана, пр. Мангилик Ел, 57А</p>
-
       <div style="display:flex;flex-direction:column;gap:8px;">
-        <input type="text" placeholder="ФИО" style="
-          background:rgba(255,255,255,0.04); border:1px solid rgba(100,160,255,0.16);
-          border-radius:6px; padding:8px 12px; color:#fff; font-size:12px;
-          font-family:inherit; outline:none; transition:border-color 0.2s; width:100%; box-sizing:border-box;
-        " onfocus="this.style.borderColor='rgba(100,160,255,0.5)'" onblur="this.style.borderColor='rgba(100,160,255,0.16)'">
-
+        <input type="text" placeholder="ФИО" style="background:rgba(255,255,255,0.04);border:1px solid rgba(100,160,255,0.16);border-radius:6px;padding:8px 12px;color:#fff;font-size:12px;font-family:inherit;outline:none;transition:border-color 0.2s;width:100%;box-sizing:border-box;" onfocus="this.style.borderColor='rgba(100,160,255,0.5)'" onblur="this.style.borderColor='rgba(100,160,255,0.16)'">
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
-          <input type="email" placeholder="Email" style="
-            background:rgba(255,255,255,0.04); border:1px solid rgba(100,160,255,0.16);
-            border-radius:6px; padding:8px 12px; color:#fff; font-size:12px;
-            font-family:inherit; outline:none; transition:border-color 0.2s; box-sizing:border-box;
-          " onfocus="this.style.borderColor='rgba(100,160,255,0.5)'" onblur="this.style.borderColor='rgba(100,160,255,0.16)'">
-          <input type="tel" placeholder="Телефон" style="
-            background:rgba(255,255,255,0.04); border:1px solid rgba(100,160,255,0.16);
-            border-radius:6px; padding:8px 12px; color:#fff; font-size:12px;
-            font-family:inherit; outline:none; transition:border-color 0.2s; box-sizing:border-box;
-          " onfocus="this.style.borderColor='rgba(100,160,255,0.5)'" onblur="this.style.borderColor='rgba(100,160,255,0.16)'">
+          <input type="email" placeholder="Email" style="background:rgba(255,255,255,0.04);border:1px solid rgba(100,160,255,0.16);border-radius:6px;padding:8px 12px;color:#fff;font-size:12px;font-family:inherit;outline:none;transition:border-color 0.2s;box-sizing:border-box;" onfocus="this.style.borderColor='rgba(100,160,255,0.5)'" onblur="this.style.borderColor='rgba(100,160,255,0.16)'">
+          <input type="tel" placeholder="Телефон" style="background:rgba(255,255,255,0.04);border:1px solid rgba(100,160,255,0.16);border-radius:6px;padding:8px 12px;color:#fff;font-size:12px;font-family:inherit;outline:none;transition:border-color 0.2s;box-sizing:border-box;" onfocus="this.style.borderColor='rgba(100,160,255,0.5)'" onblur="this.style.borderColor='rgba(100,160,255,0.16)'">
         </div>
-
-        <input type="text" placeholder="Предмет вопроса" style="
-          background:rgba(255,255,255,0.04); border:1px solid rgba(100,160,255,0.16);
-          border-radius:6px; padding:8px 12px; color:#fff; font-size:12px;
-          font-family:inherit; outline:none; transition:border-color 0.2s; width:100%; box-sizing:border-box;
-        " onfocus="this.style.borderColor='rgba(100,160,255,0.5)'" onblur="this.style.borderColor='rgba(100,160,255,0.16)'">
-
-        <textarea placeholder="Ваш вопрос" rows="2" style="
-          background:rgba(255,255,255,0.04); border:1px solid rgba(100,160,255,0.16);
-          border-radius:6px; padding:8px 12px; color:#fff; font-size:12px;
-          font-family:inherit; outline:none; resize:none; transition:border-color 0.2s; width:100%; box-sizing:border-box;
-        " onfocus="this.style.borderColor='rgba(100,160,255,0.5)'" onblur="this.style.borderColor='rgba(100,160,255,0.16)'"></textarea>
-
-        <button onclick="this.textContent='Отправлено ✓';this.style.background='linear-gradient(135deg,#0e7a4a,#0a5a38)'" style="
-          margin-top:2px; padding:10px; border:none; border-radius:6px; cursor:pointer;
-          background:linear-gradient(135deg,#1a4aaa,#0a2a70);
-          border:1px solid rgba(100,160,255,0.25);
-          color:#fff; font-size:12.5px; font-weight:600; font-family:inherit;
-          letter-spacing:0.04em; transition:background 0.25s, transform 0.2s;
-        " onmouseover="this.style.transform='translateY(-1px)'" onmouseout="this.style.transform='none'">
-          Отправить →
-        </button>
+        <input type="text" placeholder="Предмет вопроса" style="background:rgba(255,255,255,0.04);border:1px solid rgba(100,160,255,0.16);border-radius:6px;padding:8px 12px;color:#fff;font-size:12px;font-family:inherit;outline:none;transition:border-color 0.2s;width:100%;box-sizing:border-box;" onfocus="this.style.borderColor='rgba(100,160,255,0.5)'" onblur="this.style.borderColor='rgba(100,160,255,0.16)'">
+        <textarea placeholder="Ваш вопрос" rows="2" style="background:rgba(255,255,255,0.04);border:1px solid rgba(100,160,255,0.16);border-radius:6px;padding:8px 12px;color:#fff;font-size:12px;font-family:inherit;outline:none;resize:none;transition:border-color 0.2s;width:100%;box-sizing:border-box;" onfocus="this.style.borderColor='rgba(100,160,255,0.5)'" onblur="this.style.borderColor='rgba(100,160,255,0.16)'"></textarea>
+        <button onclick="this.textContent='Отправлено ✓';this.style.background='linear-gradient(135deg,#0e7a4a,#0a5a38)'" style="margin-top:2px;padding:10px;border:none;border-radius:6px;cursor:pointer;background:linear-gradient(135deg,#1a4aaa,#0a2a70);border:1px solid rgba(100,160,255,0.25);color:#fff;font-size:12.5px;font-weight:600;font-family:inherit;letter-spacing:0.04em;transition:background 0.25s,transform 0.2s;" onmouseover="this.style.transform='translateY(-1px)'" onmouseout="this.style.transform='none'">Отправить →</button>
       </div>
-
       <div style="display:flex;gap:16px;margin-top:12px;justify-content:center;">
         <a href="tel:+77272584958" style="font-size:11px;color:rgba(200,220,255,0.40);text-decoration:none;">📞 +7 727 258-49-58</a>
         <a href="mailto:info@bsbnb.kz" style="font-size:11px;color:rgba(200,220,255,0.40);text-decoration:none;">✉ info@bsbnb.kz</a>
       </div>
     </div>
-
-    <!-- Monitor bottom bezel -->
-    <div style="
-      background:linear-gradient(180deg,#0c1622 0%,#121e2e 100%);
-      border:1.5px solid rgba(60,110,200,0.30);
-      border-top:none;
-      border-radius:0 0 6px 6px;
-      height:14px;
-      display:flex; align-items:center; justify-content:center;
-    ">
+    <div style="background:linear-gradient(180deg,#0c1622 0%,#121e2e 100%);border:1.5px solid rgba(60,110,200,0.30);border-top:none;border-radius:0 0 6px 6px;height:14px;display:flex;align-items:center;justify-content:center;">
       <div style="width:28px;height:4px;border-radius:2px;background:rgba(100,160,255,0.15);"></div>
     </div>
-    <!-- Neck + base -->
     <div style="display:flex;flex-direction:column;align-items:center;gap:0;">
       <div style="width:16px;height:22px;background:linear-gradient(to bottom,#0c1622,#18283c);border-radius:0 0 3px 3px;"></div>
       <div style="width:100px;height:9px;background:linear-gradient(to bottom,#18283c,#0c1622);border-radius:0 0 8px 8px;"></div>
@@ -400,284 +178,179 @@
   </div>
 </section>
 
-
 <script type="importmap">
 { "imports": { "three": "https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.module.js" } }
 </script>
 <script type="module">
 import * as THREE from 'three';
 
-// 1. Быстрое определение мобильного/слабого устройства
 const isMobile = /Mobi|Android|iPhone|iPad/i.test(navigator.userAgent) || window.innerWidth < 768;
 
-const scene = new THREE.Scene();
-scene.fog = new THREE.Fog(0x0d1e3a, 90, 220);
-
-const renderer = new THREE.WebGLRenderer({ 
-  antialias: !isMobile, // Отключаем ресурсоемкий сглаживание на смартфонах
-  powerPreference: "high-performance" 
-});
-
-// 2. Ограничиваем Pixel Ratio: на смартфонах 1.0 (это спасет от перегрева), на ПК максимум 1.5 вместо 2.0
-renderer.setPixelRatio(isMobile ? 1.0 : Math.min(window.devicePixelRatio, 1.5));
+// ── Renderer ──────────────────────────────────────────────────────────────────
+const renderer = new THREE.WebGLRenderer({ antialias: !isMobile, powerPreference: 'high-performance' });
+renderer.setPixelRatio(Math.min(window.devicePixelRatio, isMobile ? 1.5 : 2.0));
 renderer.setSize(window.innerWidth, window.innerHeight);
-
-// 3. Оптимизация теней
-if (isMobile) {
-  // На телефонах полностью отключаем тени — это дает мгновенный буст с 15 FPS до 60 FPS
-  renderer.shadowMap.enabled = false;
-} else {
-  renderer.shadowMap.enabled = true;
-  // Заменяем тяжелый PCFSoftShadowMap на производительный Basic или стандартный PCF
-  renderer.shadowMap.type = THREE.PCFShadowMap; 
-}
-
+renderer.shadowMap.enabled = !isMobile;
+renderer.shadowMap.type = THREE.PCFShadowMap;
 renderer.outputEncoding = THREE.sRGBEncoding;
 renderer.toneMapping = THREE.ACESFilmicToneMapping;
 renderer.toneMappingExposure = 1.15;
 document.getElementById('canvas-wrap').appendChild(renderer.domElement);
 
-// ── Sky sphere ────────────────────────────────────────────────────────────────
-{
-  const skyTex = (()=>{
-    const c=document.createElement('canvas'); c.width=4; c.height=512;
-    const ctx=c.getContext('2d');
-    const g=ctx.createLinearGradient(0,0,0,512);
-    g.addColorStop(0.00,'#04101e');   // near-zenith deep night blue
-    g.addColorStop(0.18,'#06223d');
-    g.addColorStop(0.42,'#0a3a6e');   // mid sky
-    g.addColorStop(0.68,'#1560a8');   // horizon blue
-    g.addColorStop(0.82,'#2a7cc7');   // bright horizon
-    g.addColorStop(0.92,'#5ba0d0');   // haze
-    g.addColorStop(1.00,'#8ec0e0');   // ground haze
-    ctx.fillStyle=g; ctx.fillRect(0,0,4,512);
-    const t=new THREE.CanvasTexture(c);
-    t.mapping=THREE.EquirectangularReflectionMapping;
-    return t;
-  })();
-  const skyGeo = new THREE.SphereGeometry(180,32,16);
-  const skyMat = new THREE.MeshBasicMaterial({
-    map: skyTex, side: THREE.BackSide, depthWrite: false
-  });
-  // UV map sky so gradient goes top-to-bottom on sphere
-  const skyMesh = new THREE.Mesh(skyGeo, skyMat);
-  scene.add(skyMesh);
-  scene.background = null;
+// ── Scene ─────────────────────────────────────────────────────────────────────
+const scene = new THREE.Scene();
+// Туман ближе на мобиле — не рендерим дальние этажи
+scene.fog = new THREE.Fog(0x0d1e3a, isMobile ? 60 : 90, isMobile ? 120 : 220);
 
-  // Subtle sun disc
-  const sunGeo = new THREE.SphereGeometry(3.5,16,12);
-  const sunMat = new THREE.MeshBasicMaterial({color:0xfff0c0,transparent:true,opacity:0.55});
-  const sun = new THREE.Mesh(sunGeo,sunMat);
+// ── Sky ───────────────────────────────────────────────────────────────────────
+{
+  const skyCanvas = document.createElement('canvas'); skyCanvas.width=4; skyCanvas.height=512;
+  const ctx = skyCanvas.getContext('2d');
+  const g = ctx.createLinearGradient(0,0,0,512);
+  g.addColorStop(0.00,'#04101e'); g.addColorStop(0.18,'#06223d'); g.addColorStop(0.42,'#0a3a6e');
+  g.addColorStop(0.68,'#1560a8'); g.addColorStop(0.82,'#2a7cc7'); g.addColorStop(0.92,'#5ba0d0'); g.addColorStop(1.00,'#8ec0e0');
+  ctx.fillStyle=g; ctx.fillRect(0,0,4,512);
+  const skyTex = new THREE.CanvasTexture(skyCanvas);
+  skyTex.mapping = THREE.EquirectangularReflectionMapping;
+  scene.add(new THREE.Mesh(new THREE.SphereGeometry(180,isMobile?16:32,isMobile?8:16), new THREE.MeshBasicMaterial({map:skyTex,side:THREE.BackSide,depthWrite:false})));
+
+  const sun = new THREE.Mesh(new THREE.SphereGeometry(3.5,8,6), new THREE.MeshBasicMaterial({color:0xfff0c0,transparent:true,opacity:0.55}));
   sun.position.set(60,110,-130); scene.add(sun);
-  // Sun halo
-  const haloGeo = new THREE.SphereGeometry(7,16,12);
-  const haloMat = new THREE.MeshBasicMaterial({color:0xffeea0,transparent:true,opacity:0.12,side:THREE.FrontSide});
-  const halo = new THREE.Mesh(haloGeo,haloMat);
+  const halo = new THREE.Mesh(new THREE.SphereGeometry(7,8,6), new THREE.MeshBasicMaterial({color:0xffeea0,transparent:true,opacity:0.12}));
   halo.position.copy(sun.position); scene.add(halo);
 
-  // Directional sun light
   const sunLight = new THREE.DirectionalLight(0xfff5d0, 1.2);
-  sunLight.position.set(60,110,-130); sunLight.castShadow=true; scene.add(sunLight);
+  sunLight.position.set(60,110,-130); scene.add(sunLight);
 }
 
 // ── Camera ────────────────────────────────────────────────────────────────────
-const camera = new THREE.PerspectiveCamera(55, window.innerWidth/window.innerHeight, 0.1, 350);
+const camera = new THREE.PerspectiveCamera(55, window.innerWidth/window.innerHeight, 0.1, isMobile ? 180 : 350);
 
-// ── Cinematic keyframes ───────────────────────────────────────────────────────
-// Each keyframe: scroll progress [0..1], camera pos, look-at target
-// Floor 13 Y base = 13*4 = 52.  Inside room: Y∈[52..56], X∈[-5..5], Z∈[-4..4]
-// Whiteboard at Z≈-3.95, center X≈0.2, Y≈54.2
-// Monitor screens at X≈-3.8/-1.3/1.2, Y≈53.18, Z≈-2.82
+// ── Keyframes ─────────────────────────────────────────────────────────────────
 const keyframes = [
-  // 0: Upper floors establishing shot — half-side angle from right
-  { t: 0.00,
-    pos: new THREE.Vector3(34,  52,  46),
-    tgt: new THREE.Vector3( 2,  50,   0) },
-  // 1: Slowly close in on floor 13 zone — still outside
-  { t: 0.18,
-    pos: new THREE.Vector3(20,  56,  36),
-    tgt: new THREE.Vector3( 2,  54,   0) },
-  // 2: Press against front glass of floor 13 — peer inside
-  { t: 0.30,
-    pos: new THREE.Vector3( 0,  53.8, 7.5),
-    tgt: new THREE.Vector3( 0,  53.5, -1) },
-  // 3: Inside — floating above floor, looking toward whiteboard (back wall)
-  { t: 0.44,
-    pos: new THREE.Vector3( 1,  54.8,  1.5),
-    tgt: new THREE.Vector3( 0.2, 54.2, -4) },
-  // 4: Close up on whiteboard — linger
-  { t: 0.56,
-    pos: new THREE.Vector3( 0.2, 54.3, -1.0),
-    tgt: new THREE.Vector3( 0.2, 54.2, -4) },
-  // 5: Still on whiteboard — hold a beat
-  { t: 0.64,
-    pos: new THREE.Vector3( 0.2, 54.3, -1.0),
-    tgt: new THREE.Vector3( 0.2, 54.2, -4) },
-  // 6: Pull left, swivel toward workstation row
-  { t: 0.74,
-    pos: new THREE.Vector3(-1.0, 54.6, -0.5),
-    tgt: new THREE.Vector3(-1.3, 53.5, -2.8) },
-  // 7: Final — tight close-up on monitor screen (form overlay moment)
-  { t: 1.00,
-    pos: new THREE.Vector3(-1.3, 53.55, -1.2),
-    tgt: new THREE.Vector3(-1.3, 53.18,-2.82) },
+  { t:0.00, pos:new THREE.Vector3(34,52,46),    tgt:new THREE.Vector3(2,50,0)        },
+  { t:0.18, pos:new THREE.Vector3(20,56,36),    tgt:new THREE.Vector3(2,54,0)        },
+  { t:0.30, pos:new THREE.Vector3(0,53.8,7.5),  tgt:new THREE.Vector3(0,53.5,-1)    },
+  { t:0.44, pos:new THREE.Vector3(1,54.8,1.5),  tgt:new THREE.Vector3(0.2,54.2,-4)  },
+  { t:0.56, pos:new THREE.Vector3(0.2,54.3,-1), tgt:new THREE.Vector3(0.2,54.2,-4)  },
+  { t:0.64, pos:new THREE.Vector3(0.2,54.3,-1), tgt:new THREE.Vector3(0.2,54.2,-4)  },
+  { t:0.74, pos:new THREE.Vector3(-1,54.6,-0.5),tgt:new THREE.Vector3(-1.3,53.5,-2.8)},
+  { t:1.00, pos:new THREE.Vector3(-1.3,53.55,-1.2),tgt:new THREE.Vector3(-1.3,53.18,-2.82)},
 ];
 
-// Current camera state (lerped each frame)
-const camPos = keyframes[0].pos.clone();
-const camTgt = keyframes[0].tgt.clone();
-const camPosTarget = keyframes[0].pos.clone();
-const camTgtTarget = keyframes[0].tgt.clone();
-
-// Smooth cubic ease
-function smoothstep(a,b,t){ t=Math.max(0,Math.min(1,t)); t=t*t*(3-2*t); return a+(b-a)*t; }
-
-function getKeyframedCamera(progress){
-  // Clamp progress to [0..1]
-  const p = Math.max(0, Math.min(1, progress));
-  // If at or past the last keyframe, return it exactly
+function getKeyframedCamera(p){
+  p = Math.max(0, Math.min(1, p));
   const last = keyframes[keyframes.length-1];
   if(p >= last.t) return { pos: last.pos.clone(), tgt: last.tgt.clone() };
-  // Find surrounding keyframes
   let k0=keyframes[0], k1=keyframes[1];
   for(let i=0;i<keyframes.length-1;i++){
-    if(p>=keyframes[i].t && p<=keyframes[i+1].t){
-      k0=keyframes[i]; k1=keyframes[i+1]; break;
-    }
+    if(p>=keyframes[i].t && p<=keyframes[i+1].t){ k0=keyframes[i]; k1=keyframes[i+1]; break; }
   }
-  const span=k1.t-k0.t;
-  const local=span<0.001?1:(p-k0.t)/span;
-  const e=local*local*(3-2*local); // smoothstep
-  const pos=new THREE.Vector3().lerpVectors(k0.pos,k1.pos,e);
-  const tgt=new THREE.Vector3().lerpVectors(k0.tgt,k1.tgt,e);
-  return {pos,tgt};
+  const span=k1.t-k0.t, local=span<0.001?1:(p-k0.t)/span;
+  const e=local*local*(3-2*local);
+  return { pos:new THREE.Vector3().lerpVectors(k0.pos,k1.pos,e), tgt:new THREE.Vector3().lerpVectors(k0.tgt,k1.tgt,e) };
 }
 
-// Scroll state
+const camPos = keyframes[0].pos.clone();
+const camTgt = keyframes[0].tgt.clone();
 let scrollProgress = 0;
-let manualControl = false; // after animation ends, allow orbit
-let isDragging=false, isRight=false;
-let prev={x:0,y:0};
-let sph={theta:Math.PI/2,phi:Math.PI/2.8,radius:68};
-const orbitTgt = new THREE.Vector3(0,54,0);
-function updateOrbitCam(){
-  camera.position.set(
-    orbitTgt.x+sph.radius*Math.sin(sph.phi)*Math.sin(sph.theta),
-    orbitTgt.y+sph.radius*Math.cos(sph.phi),
-    orbitTgt.z+sph.radius*Math.sin(sph.phi)*Math.cos(sph.theta)
-  );
-  camera.lookAt(orbitTgt);
-}
 
-// Scroll driver
+// ── Scroll ────────────────────────────────────────────────────────────────────
 const totalScrollHeight = ()=> document.body.scrollHeight - window.innerHeight;
 window.addEventListener('scroll', ()=>{
-  const maxScroll = totalScrollHeight();
-  scrollProgress = Math.max(0,Math.min(1, window.scrollY / maxScroll));
-  // Progress bar
+  scrollProgress = Math.max(0, Math.min(1, window.scrollY / totalScrollHeight()));
   document.getElementById('progress').style.width = (scrollProgress*100)+'%';
-  // No manual control — camera stays fixed on final keyframe
-  // Card reveals
   revealCards();
-});
+}, { passive: true });
 
 function revealCards(){
-  [
-    {id:'card-approach', thresh:0.22},
-    {id:'card-board',    thresh:0.48},
-    {id:'card-monitor',  thresh:0.70},
-  ].forEach(({id,thresh})=>{
-    const el=document.getElementById(id);
-    if(scrollProgress>=thresh) el.classList.add('visible');
-    else el.classList.remove('visible');
-  });
-
-  // Contact form card reveal
-  const cc=document.getElementById('contact-card');
-  if(cc){ if(scrollProgress>=0.88){cc.style.opacity='1';cc.style.transform='translateY(0)';}
-          else{cc.style.opacity='0';cc.style.transform='translateY(24px)';} }
-
-  // Navbar active link
-  const sections = ['sec-hero','sec-about','sec-board','sec-monitor','sec-final'];
-  const links = document.querySelectorAll('#navbar .nav-link');
-  let active = 0;
-  sections.forEach((sid, i) => {
-    const el = document.getElementById(sid);
-    if(el && el.getBoundingClientRect().top <= 80) active = i;
-  });
-  links.forEach((l,i) => l.classList.toggle('active', i===active));
+  [{id:'card-approach',thresh:0.22},{id:'card-board',thresh:0.48},{id:'card-monitor',thresh:0.70}]
+    .forEach(({id,thresh})=>{
+      document.getElementById(id).classList.toggle('visible', scrollProgress>=thresh);
+    });
+  const cc = document.getElementById('contact-card');
+  if(cc){ cc.style.opacity = scrollProgress>=0.88 ? '1':'0'; cc.style.transform = scrollProgress>=0.88 ? 'translateY(0)':'translateY(24px)'; }
+  const sections=['sec-hero','sec-about','sec-board','sec-monitor','sec-final'];
+  const links=document.querySelectorAll('#navbar .nav-link');
+  let active=0;
+  sections.forEach((sid,i)=>{ const el=document.getElementById(sid); if(el&&el.getBoundingClientRect().top<=80) active=i; });
+  links.forEach((l,i)=>l.classList.toggle('active',i===active));
 }
 
-// No orbit controls — scroll-driven only
 window.addEventListener('resize',()=>{
   camera.aspect=window.innerWidth/window.innerHeight;
   camera.updateProjectionMatrix();
   renderer.setSize(window.innerWidth,window.innerHeight);
 });
 
-// Init camera position
-const cf=getKeyframedCamera(0);
-camera.position.copy(cf.pos); camera.lookAt(cf.tgt);
+const cf0 = getKeyframedCamera(0);
+camera.position.copy(cf0.pos); camera.lookAt(cf0.tgt);
 
 // ── Canvas texture helper ─────────────────────────────────────────────────────
-function mkTex(w, h, fn) {
-  const c = document.createElement('canvas'); c.width=w; c.height=h;
-  const ctx = c.getContext('2d'); fn(ctx,w,h);
+function mkTex(w,h,fn){
+  const c=document.createElement('canvas'); c.width=w; c.height=h;
+  const ctx=c.getContext('2d'); fn(ctx,w,h);
   return new THREE.CanvasTexture(c);
 }
 
-// Floor
-const floorTex = mkTex(512,512,(ctx,w,h)=>{
+// ── Shared textures (created once) ────────────────────────────────────────────
+const floorTex = mkTex(256,256,(ctx,w,h)=>{
   ctx.fillStyle='#787878'; ctx.fillRect(0,0,w,h);
-  ctx.strokeStyle='#585858'; ctx.lineWidth=3;
-  for(let x=0;x<=w;x+=128){ctx.beginPath();ctx.moveTo(x,0);ctx.lineTo(x,h);ctx.stroke();}
-  for(let y=0;y<=h;y+=128){ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(w,y);ctx.stroke();}
-  for(let i=0;i<500;i++){ctx.fillStyle=`rgba(0,0,0,${Math.random()*0.04})`;ctx.fillRect(Math.random()*w,Math.random()*h,2,2);}
+  ctx.strokeStyle='#585858'; ctx.lineWidth=2;
+  for(let x=0;x<=w;x+=64){ctx.beginPath();ctx.moveTo(x,0);ctx.lineTo(x,h);ctx.stroke();}
+  for(let y=0;y<=h;y+=64){ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(w,y);ctx.stroke();}
 });
 floorTex.wrapS=floorTex.wrapT=THREE.RepeatWrapping; floorTex.repeat.set(4,4);
 
-// Ceiling
-const ceilTex = mkTex(512,512,(ctx,w,h)=>{
+const ceilTex = mkTex(256,256,(ctx,w,h)=>{
   ctx.fillStyle='#dce0e8'; ctx.fillRect(0,0,w,h);
-  ctx.strokeStyle='#b0b8c4'; ctx.lineWidth=2;
-  for(let x=0;x<=w;x+=128){ctx.beginPath();ctx.moveTo(x,0);ctx.lineTo(x,h);ctx.stroke();}
-  for(let y=0;y<=h;y+=128){ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(w,y);ctx.stroke();}
+  ctx.strokeStyle='#b0b8c4'; ctx.lineWidth=1;
+  for(let x=0;x<=w;x+=64){ctx.beginPath();ctx.moveTo(x,0);ctx.lineTo(x,h);ctx.stroke();}
+  for(let y=0;y<=h;y+=64){ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(w,y);ctx.stroke();}
 });
 ceilTex.wrapS=ceilTex.wrapT=THREE.RepeatWrapping; ceilTex.repeat.set(4,3);
 
-// ── Room dimensions ───────────────────────────────────────────────────────────
-const RW=10, RD=8, RH=4;
-const FLOORS=16;
+// ── Shared geometries (created once, reused across floors) ────────────────────
+const geoFloor    = new THREE.PlaneGeometry(10,8);
+const geoCeil     = new THREE.PlaneGeometry(10.2,8.2);
+const geoPillar   = new THREE.BoxGeometry(0.15,4,0.15);
+const geoLampHsg  = new THREE.BoxGeometry(0.25,0.07,1.4);
+const geoLampDiff = new THREE.BoxGeometry(0.2,0.025,1.3);
+const geoRailH    = new THREE.BoxGeometry(10,0.06,0.05);
 
-// ── Shared materials (defined once) ──────────────────────────────────────────
-const glassMat=new THREE.MeshPhysicalMaterial({
-  color:0x0d2a5e,roughness:0.04,metalness:0,
-  transmission:0.72,opacity:0.85,transparent:true,
-  ior:1.5,reflectivity:0.6,side:THREE.DoubleSide
-});
-const frameMat=new THREE.MeshStandardMaterial({color:0x223355,roughness:0.3,metalness:0.7});
-const wfMat=new THREE.MeshStandardMaterial({color:0x1a3366,roughness:0.2,metalness:0.8});
-const closedGlass=new THREE.MeshPhysicalMaterial({color:0x1a3a6e,roughness:0.03,metalness:0,transmission:0.8,opacity:0.75,transparent:true,ior:1.5,reflectivity:0.7,side:THREE.DoubleSide});
-const lampMat=new THREE.MeshStandardMaterial({color:0xffffff,emissive:0xfff8e0,emissiveIntensity:1.8,roughness:1});
-const doorMat=new THREE.MeshStandardMaterial({color:0x1a2a3a,roughness:0.15,metalness:0.85});
+// ── Shared materials (created once) ──────────────────────────────────────────
+const matFloor   = new THREE.MeshStandardMaterial({map:floorTex,roughness:0.85,metalness:0});
+const matCeil    = new THREE.MeshStandardMaterial({map:ceilTex,roughness:0.9});
+const glassMat   = new THREE.MeshPhysicalMaterial({color:0x0d2a5e,roughness:0.04,metalness:0,transmission:0.72,opacity:0.85,transparent:true,ior:1.5,reflectivity:0.6,side:THREE.DoubleSide});
+const frameMat   = new THREE.MeshStandardMaterial({color:0x223355,roughness:0.3,metalness:0.7});
+const wfMat      = new THREE.MeshStandardMaterial({color:0x1a3366,roughness:0.2,metalness:0.8});
+const closedGlass= new THREE.MeshPhysicalMaterial({color:0x1a3a6e,roughness:0.03,metalness:0,transmission:0.8,opacity:0.75,transparent:true,ior:1.5,reflectivity:0.7,side:THREE.DoubleSide});
+const lampMat    = new THREE.MeshStandardMaterial({color:0xffffff,emissive:0xfff8e0,emissiveIntensity:1.8,roughness:1});
+const doorMat    = new THREE.MeshStandardMaterial({color:0x1a2a3a,roughness:0.15,metalness:0.85});
+const pillarMat  = new THREE.MeshStandardMaterial({color:0x1a3366,roughness:0.2,metalness:0.8});
+const lampHsgMat = new THREE.MeshStandardMaterial({color:0xc8cdd8,roughness:0.5,metalness:0.4});
+const clockFaceMat=new THREE.MeshStandardMaterial({color:0xf5f5f0,roughness:0.8});
+const clockRimMat= new THREE.MeshStandardMaterial({color:0x222222,roughness:0.3,metalness:0.6});
+const clockHndMat= new THREE.MeshStandardMaterial({color:0x111111,roughness:0.5});
 
-// ── Build one floor at Y offset ───────────────────────────────────────────────
-function buildFloor(floorIdx){
-  const Y=floorIdx*RH; // base Y of this floor
-  const g=new THREE.Group();
-  g.position.y=Y;
+const RW=10, RD=8, RH=4, FLOORS=16;
 
-  // Floor slab
-  const fl=new THREE.Mesh(new THREE.PlaneGeometry(RW,RD),
-    new THREE.MeshStandardMaterial({map:floorTex,roughness:0.85,metalness:0}));
-  fl.rotation.x=-Math.PI/2; fl.receiveShadow=true; g.add(fl);
+// ── Shared clock geometry (reused 16×) ────────────────────────────────────────
+const geoClkFace = new THREE.CircleGeometry(0.22, isMobile ? 16 : 32);
+const geoClkRim  = new THREE.TorusGeometry(0.22, 0.025, 6, isMobile ? 16 : 32);
+const geoClkHH   = new THREE.BoxGeometry(0.03,0.13,0.02);
+const geoClkMH   = new THREE.BoxGeometry(0.018,0.18,0.02);
 
-  // Ceiling slab (shared with floor above — only add on last floor as roof)
-  const ce=new THREE.Mesh(new THREE.PlaneGeometry(RW+0.2,RD+0.2),
-    new THREE.MeshStandardMaterial({map:ceilTex,roughness:0.9}));
-  ce.rotation.x=Math.PI/2; ce.position.y=RH; g.add(ce);
+// ── Build one floor ───────────────────────────────────────────────────────────
+const floorGroups = [];
 
-  // Helper: glass wall with frame bars
+function buildFloor(i){
+  const g = new THREE.Group();
+  g.position.y = i * RH;
+
+  const fl = new THREE.Mesh(geoFloor, matFloor); fl.rotation.x=-Math.PI/2; fl.receiveShadow=true; g.add(fl);
+  const ce = new THREE.Mesh(geoCeil, matCeil);   ce.rotation.x=Math.PI/2; ce.position.y=RH; g.add(ce);
+
   function glassWall(w,h,x,y,z,ry=0){
     const m=new THREE.Mesh(new THREE.PlaneGeometry(w,h),glassMat);
     m.position.set(x,y,z); m.rotation.y=ry; g.add(m);
@@ -692,606 +365,332 @@ function buildFloor(floorIdx){
       if(ry===0) bar(0.05,h,x+xoff,y,z); else bar(0.05,h,x,y,z-xoff);
     }
   }
-
   glassWall(RD,RH,-RW/2,RH/2,0,Math.PI/2);
   glassWall(RD,RH, RW/2,RH/2,0,Math.PI/2);
   glassWall(RW,RH,0,RH/2,-RD/2,0);
 
-  // Front wall
-  if(floorIdx===0){
-    // ── GROUND FLOOR: double doors instead of window ──────────────────────────
-    const dW=1.3, dH=3.2, gap=0.04;
-    const sideW2=(RW-dW*2-gap)/2;
-
-    // Side glass panels
-    {const m=new THREE.Mesh(new THREE.PlaneGeometry(sideW2,RH),glassMat);m.position.set(-RW/2+sideW2/2,RH/2,RD/2);g.add(m);}
-    {const m=new THREE.Mesh(new THREE.PlaneGeometry(sideW2,RH),glassMat);m.position.set( RW/2-sideW2/2,RH/2,RD/2);g.add(m);}
-    // Panel above doors
-    {const abH=RH-dH; const m=new THREE.Mesh(new THREE.PlaneGeometry(dW*2+gap+0.1,abH),glassMat);m.position.set(0,dH+abH/2,RD/2);g.add(m);}
-
-    // Door frame
+  if(i===0){
+    const dW=1.3,dH=3.2,gap=0.04,sideW2=(RW-dW*2-gap)/2;
+    { const m=new THREE.Mesh(new THREE.PlaneGeometry(sideW2,RH),glassMat); m.position.set(-RW/2+sideW2/2,RH/2,RD/2); g.add(m); }
+    { const m=new THREE.Mesh(new THREE.PlaneGeometry(sideW2,RH),glassMat); m.position.set( RW/2-sideW2/2,RH/2,RD/2); g.add(m); }
+    const abH=RH-dH; { const m=new THREE.Mesh(new THREE.PlaneGeometry(dW*2+gap+0.1,abH),glassMat); m.position.set(0,dH+abH/2,RD/2); g.add(m); }
     const dfMat=new THREE.MeshStandardMaterial({color:0x0d1e38,roughness:0.15,metalness:0.9});
-    // Top beam
-    {const b=new THREE.Mesh(new THREE.BoxGeometry(dW*2+gap+0.2,0.08,0.12),dfMat);b.position.set(0,dH,RD/2);g.add(b);}
-    // Side posts
-    {const b=new THREE.Mesh(new THREE.BoxGeometry(0.08,dH,0.12),dfMat);b.position.set(-(dW+gap/2+0.04),dH/2,RD/2);g.add(b);}
-    {const b=new THREE.Mesh(new THREE.BoxGeometry(0.08,dH,0.12),dfMat);b.position.set( (dW+gap/2+0.04),dH/2,RD/2);g.add(b);}
-    // Centre divider
-    {const b=new THREE.Mesh(new THREE.BoxGeometry(0.06,dH,0.10),dfMat);b.position.set(0,dH/2,RD/2);g.add(b);}
-
-    // Left door leaf
-    {
+    [[dW*2+gap+0.2,0.08,0.12,0,dH,RD/2],[0.08,dH,0.12,-(dW+gap/2+0.04),dH/2,RD/2],[0.08,dH,0.12,(dW+gap/2+0.04),dH/2,RD/2],[0.06,dH,0.10,0,dH/2,RD/2]]
+      .forEach(([w,h,d,x,y,z])=>{ const m=new THREE.Mesh(new THREE.BoxGeometry(w,h,d),dfMat); m.position.set(x,y,z); g.add(m); });
+    const hndMat=new THREE.MeshStandardMaterial({color:0xdddddd,roughness:0.1,metalness:1});
+    [[-1,-(gap/2+0.1)],[1,(gap/2+0.1)]].forEach(([s,hx])=>{
       const leaf=new THREE.Mesh(new THREE.BoxGeometry(dW-0.04,dH-0.06,0.05),doorMat);
-      leaf.position.set(-(dW/2+gap/2-0.02),dH/2,RD/2); g.add(leaf);
-      // Glass panel inset
+      leaf.position.set(s*(dW/2+gap/2-0.02),dH/2,RD/2); g.add(leaf);
       const gl=new THREE.Mesh(new THREE.PlaneGeometry(dW*0.55,dH*0.5),closedGlass);
-      gl.position.set(-(dW/2+gap/2-0.02),dH*0.62,RD/2+0.03); g.add(gl);
-      // Handle
-      const hnd=new THREE.Mesh(new THREE.BoxGeometry(0.04,0.22,0.04),
-        new THREE.MeshStandardMaterial({color:0xdddddd,roughness:0.1,metalness:1}));
-      hnd.position.set(-(gap/2+0.1),dH*0.48,RD/2+0.05); g.add(hnd);
-    }
-    // Right door leaf
-    {
-      const leaf=new THREE.Mesh(new THREE.BoxGeometry(dW-0.04,dH-0.06,0.05),doorMat);
-      leaf.position.set( (dW/2+gap/2-0.02),dH/2,RD/2); g.add(leaf);
-      const gl=new THREE.Mesh(new THREE.PlaneGeometry(dW*0.55,dH*0.5),closedGlass);
-      gl.position.set( (dW/2+gap/2-0.02),dH*0.62,RD/2+0.03); g.add(gl);
-      const hnd=new THREE.Mesh(new THREE.BoxGeometry(0.04,0.22,0.04),
-        new THREE.MeshStandardMaterial({color:0xdddddd,roughness:0.1,metalness:1}));
-      hnd.position.set( (gap/2+0.1),dH*0.48,RD/2+0.05); g.add(hnd);
-    }
-    // Step / threshold
-    {const s=new THREE.Mesh(new THREE.BoxGeometry(dW*2+gap+0.3,0.07,0.4),
-      new THREE.MeshStandardMaterial({color:0x2a2e36,roughness:0.6,metalness:0.3}));
-      s.position.set(0,0.035,RD/2+0.15); g.add(s);}
-
-    // Wall rails (floor/ceiling)
-    {const b=new THREE.Mesh(new THREE.BoxGeometry(RW,0.06,0.05),frameMat);b.position.set(0,RH,RD/2);g.add(b);}
-    {const b=new THREE.Mesh(new THREE.BoxGeometry(RW,0.06,0.05),frameMat);b.position.set(0,0,RD/2);g.add(b);}
-
+      gl.position.set(s*(dW/2+gap/2-0.02),dH*0.62,RD/2+0.03); g.add(gl);
+      const hnd=new THREE.Mesh(new THREE.BoxGeometry(0.04,0.22,0.04),hndMat);
+      hnd.position.set(hx,dH*0.48,RD/2+0.05); g.add(hnd);
+    });
+    const step=new THREE.Mesh(new THREE.BoxGeometry(dW*2+gap+0.3,0.07,0.4),new THREE.MeshStandardMaterial({color:0x2a2e36,roughness:0.6,metalness:0.3}));
+    step.position.set(0,0.035,RD/2+0.15); g.add(step);
+    [RH,0].forEach(ry=>{ const b=new THREE.Mesh(geoRailH,frameMat); b.position.set(0,ry,RD/2); g.add(b); });
   } else {
-    // ── UPPER FLOORS: closed window ───────────────────────────────────────────
-    const winW=2.8,winH=1.8,winY=1.8;
-    const sideW=(RW-winW)/2;
-    const belowH=winY-winH/2;
-    const aboveY=winY+winH/2, aboveH=RH-aboveY;
-
-    {const m=new THREE.Mesh(new THREE.PlaneGeometry(sideW,RH),glassMat);m.position.set(-RW/2+sideW/2,RH/2,RD/2);g.add(m);}
-    {const m=new THREE.Mesh(new THREE.PlaneGeometry(sideW,RH),glassMat);m.position.set( RW/2-sideW/2,RH/2,RD/2);g.add(m);}
-    {const m=new THREE.Mesh(new THREE.PlaneGeometry(winW,belowH),glassMat);m.position.set(0,belowH/2,RD/2);g.add(m);}
-    {const m=new THREE.Mesh(new THREE.PlaneGeometry(winW,aboveH),glassMat);m.position.set(0,aboveY+aboveH/2,RD/2);g.add(m);}
-
-    // Window frame
-    const winL=-winW/2, winTop=winY+winH/2, winBot=winY-winH/2;
-    {const b=new THREE.Mesh(new THREE.BoxGeometry(winW+0.1,0.06,0.09),wfMat);b.position.set(0,winTop,RD/2);g.add(b);}
-    {const b=new THREE.Mesh(new THREE.BoxGeometry(winW+0.1,0.06,0.14),wfMat);b.position.set(0,winBot,RD/2+0.04);g.add(b);}
-    {const b=new THREE.Mesh(new THREE.BoxGeometry(0.07,winH+0.06,0.09),wfMat);b.position.set(winL-0.03,winY,RD/2);g.add(b);}
-    {const b=new THREE.Mesh(new THREE.BoxGeometry(0.07,winH+0.06,0.09),wfMat);b.position.set(-winL+0.03,winY,RD/2);g.add(b);}
-    {const b=new THREE.Mesh(new THREE.BoxGeometry(0.05,winH,0.06),wfMat);b.position.set(0,winY,RD/2);g.add(b);}
-
-    // Closed glass pane
-    {
-      const gl=new THREE.Mesh(new THREE.PlaneGeometry(winW-0.08,winH-0.08),closedGlass);
-      gl.position.set(0,winY,RD/2); g.add(gl);
-    }
-
-    // Wall rails
-    {const b=new THREE.Mesh(new THREE.BoxGeometry(RW,0.06,0.05),frameMat);b.position.set(0,RH,RD/2);g.add(b);}
-    {const b=new THREE.Mesh(new THREE.BoxGeometry(RW,0.06,0.05),frameMat);b.position.set(0,0,RD/2);g.add(b);}
+    const winW=2.8,winH=1.8,winY=1.8,sideW=(RW-winW)/2;
+    const belowH=winY-winH/2,aboveY=winY+winH/2,aboveH=RH-aboveY;
+    { const m=new THREE.Mesh(new THREE.PlaneGeometry(sideW,RH),glassMat); m.position.set(-RW/2+sideW/2,RH/2,RD/2); g.add(m); }
+    { const m=new THREE.Mesh(new THREE.PlaneGeometry(sideW,RH),glassMat); m.position.set( RW/2-sideW/2,RH/2,RD/2); g.add(m); }
+    { const m=new THREE.Mesh(new THREE.PlaneGeometry(winW,belowH),glassMat); m.position.set(0,belowH/2,RD/2); g.add(m); }
+    { const m=new THREE.Mesh(new THREE.PlaneGeometry(winW,aboveH),glassMat); m.position.set(0,aboveY+aboveH/2,RD/2); g.add(m); }
+    const winL=-winW/2,winTop=winY+winH/2,winBot=winY-winH/2;
+    [[winW+0.1,0.06,0.09,0,winTop,RD/2],[winW+0.1,0.06,0.14,0,winBot,RD/2+0.04],
+     [0.07,winH+0.06,0.09,winL-0.03,winY,RD/2],[0.07,winH+0.06,0.09,-winL+0.03,winY,RD/2],
+     [0.05,winH,0.06,0,winY,RD/2]]
+      .forEach(([w,h,d,x,y,z])=>{ const m=new THREE.Mesh(new THREE.BoxGeometry(w,h,d),wfMat); m.position.set(x,y,z); g.add(m); });
+    const gl=new THREE.Mesh(new THREE.PlaneGeometry(winW-0.08,winH-0.08),closedGlass);
+    gl.position.set(0,winY,RD/2); g.add(gl);
+    [RH,0].forEach(ry=>{ const b=new THREE.Mesh(geoRailH,frameMat); b.position.set(0,ry,RD/2); g.add(b); });
   }
 
-  // Corner pillars (full height)
+  // Pillars
   [[-RW/2,-RD/2],[RW/2,-RD/2],[RW/2,RD/2],[-RW/2,RD/2]].forEach(([px,pz])=>{
-    const p=new THREE.Mesh(new THREE.BoxGeometry(0.15,RH,0.15),
-      new THREE.MeshStandardMaterial({color:0x1a3366,roughness:0.2,metalness:0.8}));
-    p.position.set(px,RH/2,pz); p.castShadow=true; g.add(p);
+    const p=new THREE.Mesh(geoPillar,pillarMat); p.position.set(px,RH/2,pz); g.add(p);
   });
 
-  // Ceiling lights (2 per floor, reduced from 4 for performance)
+  // Ceiling lamps (2 per floor)
   [[-2.2,-1.0],[2.2,-1.0]].forEach(([lx,lz])=>{
-    const h2=new THREE.Mesh(new THREE.BoxGeometry(0.25,0.07,1.4),
-      new THREE.MeshStandardMaterial({color:0xc8cdd8,roughness:0.5,metalness:0.4}));
-    h2.position.set(lx,RH-0.04,lz); g.add(h2);
-    const d=new THREE.Mesh(new THREE.BoxGeometry(0.2,0.025,1.3),lampMat);
-    d.position.set(lx,RH-0.075,lz); g.add(d);
-    const pl=new THREE.SpotLight(0xfff5d0,5.0,10,Math.PI/2.5,0.5,1.2);
-    pl.position.set(lx,RH-0.12,lz); pl.target.position.set(lx,0,lz);
-    pl.castShadow=(floorIdx===0); // shadows only on ground floor for perf
-    g.add(pl); g.add(pl.target);
+    const h2=new THREE.Mesh(geoLampHsg,lampHsgMat); h2.position.set(lx,RH-0.04,lz); g.add(h2);
+    const d=new THREE.Mesh(geoLampDiff,lampMat);    d.position.set(lx,RH-0.075,lz); g.add(d);
+    // На мобиле: только на этаже 13 SpotLight, остальные без источника света
+    if(!isMobile || i===13){
+      const pl = i===13
+        ? new THREE.SpotLight(0xfff5d0,5.0,10,Math.PI/2.5,0.5,1.2)
+        : new THREE.PointLight(0xfff5d0,1.5,8);
+      pl.position.set(lx,RH-0.12,lz);
+      if(pl.target){ pl.target.position.set(lx,0,lz); g.add(pl.target); }
+      pl.castShadow = (!isMobile && i===0);
+      g.add(pl);
+    }
   });
 
-  // Clock (all floors)
-  {
-    const face=new THREE.Mesh(new THREE.CircleGeometry(0.22,32),
-      new THREE.MeshStandardMaterial({color:0xf5f5f0,roughness:0.8}));
-    face.position.set(2.8,3.0,-RD/2+0.04); g.add(face);
-    const rim=new THREE.Mesh(new THREE.TorusGeometry(0.22,0.025,8,32),
-      new THREE.MeshStandardMaterial({color:0x222222,roughness:0.3,metalness:0.6}));
-    rim.position.set(2.8,3.0,-RD/2+0.05); g.add(rim);
-    const hm=new THREE.MeshStandardMaterial({color:0x111111,roughness:0.5});
-    const hh=new THREE.Mesh(new THREE.BoxGeometry(0.03,0.13,0.02),hm);
-    hh.position.set(2.8,3.07,-RD/2+0.06); g.add(hh);
-    const mh=new THREE.Mesh(new THREE.BoxGeometry(0.018,0.18,0.02),hm);
-    mh.position.set(2.83,3.09,-RD/2+0.06); mh.rotation.z=-0.5; g.add(mh);
-  }
+  // Clock
+  const face=new THREE.Mesh(geoClkFace,clockFaceMat); face.position.set(2.8,3.0,-RD/2+0.04); g.add(face);
+  const rim =new THREE.Mesh(geoClkRim, clockRimMat);  rim.position.set(2.8,3.0,-RD/2+0.05); g.add(rim);
+  const hh  =new THREE.Mesh(geoClkHH, clockHndMat);   hh.position.set(2.8,3.07,-RD/2+0.06); g.add(hh);
+  const mh  =new THREE.Mesh(geoClkMH, clockHndMat);   mh.position.set(2.83,3.09,-RD/2+0.06); mh.rotation.z=-0.5; g.add(mh);
 
   scene.add(g);
+  floorGroups.push(g);
 }
 
-// Build all 16 floors
 for(let i=0;i<FLOORS;i++) buildFloor(i);
 
-// ── Floor 13: NBK full office ─────────────────────────────────────────────────
-// Room coords: X ∈ [-5..+5], Z ∈ [-4..+4], Y ∈ [0..4]  (local to group at Y=13*RH)
+// ── Floor 13: NBK office ──────────────────────────────────────────────────────
 (function buildNBKOffice(){
-  const Y13 = 13 * RH;
   const g = new THREE.Group();
-  g.position.y = Y13;
+  g.position.y = 13*RH;
 
-  // ── Materials ────────────────────────────────────────────────────────────
   const mDesk  = new THREE.MeshStandardMaterial({color:0xc0aa88,roughness:0.45,metalness:0.05});
   const mDark  = new THREE.MeshStandardMaterial({color:0x7a6550,roughness:0.55,metalness:0.05});
   const mLeg   = new THREE.MeshStandardMaterial({color:0xb0b0b0,roughness:0.3,metalness:0.7});
   const mChair = new THREE.MeshStandardMaterial({color:0x181828,roughness:0.85,metalness:0.05});
   const mChairB= new THREE.MeshStandardMaterial({color:0x282840,roughness:0.8,metalness:0.05});
-  const mScreen= new THREE.MeshStandardMaterial({color:0x050e1a,roughness:0.1,metalness:0.2,
-                   emissive:0x1a3fff,emissiveIntensity:0.85,transparent:true,opacity:0.95});
+  const mScreen= new THREE.MeshStandardMaterial({color:0x050e1a,roughness:0.1,metalness:0.2,emissive:0x1a3fff,emissiveIntensity:0.35,transparent:true,opacity:0.95});
   const mKbd   = new THREE.MeshStandardMaterial({color:0xd5d0c8,roughness:0.8});
   const mMouse = new THREE.MeshStandardMaterial({color:0xe8e8e8,roughness:0.6});
   const mSofa  = new THREE.MeshStandardMaterial({color:0x1e2d45,roughness:0.9});
   const mSofaL = new THREE.MeshStandardMaterial({color:0x2c3e58,roughness:0.88});
-  const mBoard = new THREE.MeshStandardMaterial({color:0xf2f2ee,roughness:0.95,
-                   emissive:0xffffff,emissiveIntensity:0.06});
+  const mBoard = new THREE.MeshStandardMaterial({color:0xf2f2ee,roughness:0.95,emissive:0xffffff,emissiveIntensity:0.06});
   const mBFrame= new THREE.MeshStandardMaterial({color:0x333333,roughness:0.4,metalness:0.5});
-  const mGold  = new THREE.MeshStandardMaterial({color:0xc8960c,roughness:0.3,metalness:0.7,
-                   emissive:0x6a4a00,emissiveIntensity:0.25});
+  const mGold  = new THREE.MeshStandardMaterial({color:0xc8960c,roughness:0.3,metalness:0.7,emissive:0x6a4a00,emissiveIntensity:0.25});
   const mPlantP= new THREE.MeshStandardMaterial({color:0x5c3820,roughness:0.8});
-  const mPlant = new THREE.MeshStandardMaterial({color:0x2a622a,roughness:0.9,
-                   emissive:0x082008,emissiveIntensity:0.15});
+  const mPlant = new THREE.MeshStandardMaterial({color:0x2a622a,roughness:0.9,emissive:0x082008,emissiveIntensity:0.15});
   const mCarpet= new THREE.MeshStandardMaterial({color:0x1a2e50,roughness:1.0});
   const mPart  = new THREE.MeshStandardMaterial({color:0xd8d2c8,roughness:0.9});
   const mCoffee= new THREE.MeshStandardMaterial({color:0x1e1e1e,roughness:0.3,metalness:0.6});
   const mMug   = new THREE.MeshStandardMaterial({color:0xf5f5f5,roughness:0.7});
-  const mTV    = new THREE.MeshStandardMaterial({color:0x040a12,roughness:0.08,metalness:0.35,
-                   emissive:0x0a2050,emissiveIntensity:1.1});
   const mFridge= new THREE.MeshStandardMaterial({color:0xe0e0e0,roughness:0.25,metalness:0.6});
-  const mPartM = new THREE.MeshStandardMaterial({color:0x888888,roughness:0.4,metalness:0.5});
 
-  // ── Primitives ───────────────────────────────────────────────────────────
   const bx=(w,h,d,mat,x,y,z,ry=0)=>{
     const m=new THREE.Mesh(new THREE.BoxGeometry(w,h,d),mat);
-    m.position.set(x,y,z); if(ry) m.rotation.y=ry;
-    m.castShadow=true; m.receiveShadow=true; g.add(m); return m;
+    m.position.set(x,y,z); if(ry) m.rotation.y=ry; g.add(m); return m;
   };
-  const cy = (r, h, mat, x, y, z, seg = 16) => {
-  // Если устройство мобильное — срезаем количество полигонов вдвое
-  const dynamicSegments = isMobile ? Math.min(seg, 8) : seg; 
-  const geometry = new THREE.CylinderGeometry(r, r, h, dynamicSegments);
-  const m = new THREE.Mesh(geometry, mat);
-  m.position.set(x, y, z);
-  
-  if (!isMobile) { // Тень отбрасывается только на ПК
-    m.castShadow = true;
-    m.receiveShadow = true;
-  }
-  g.add(m);
-  return m;
-};
+  const seg = isMobile ? 8 : 16;
+  const cy=(r,h,mat,x,y,z,s=seg)=>{
+    const m=new THREE.Mesh(new THREE.CylinderGeometry(r,r,h,Math.min(s,seg)),mat);
+    m.position.set(x,y,z); g.add(m); return m;
+  };
   const sp=(r,mat,x,y,z)=>{
-    const m=new THREE.Mesh(new THREE.SphereGeometry(r,8,6),mat);
+    const m=new THREE.Mesh(new THREE.SphereGeometry(r,6,4),mat);
     m.position.set(x,y,z); g.add(m); return m;
   };
 
-  // ─────────────────────────────────────────────────────────────────────────
-  // CARPET — lounge area right side
-  // ─────────────────────────────────────────────────────────────────────────
-  {
-    const m=new THREE.Mesh(new THREE.PlaneGeometry(3.6,2.8),mCarpet);
-    m.rotation.x=-Math.PI/2; m.position.set(2.8,0.004,-1.4); g.add(m);
-  }
+  // Carpet
+  { const m=new THREE.Mesh(new THREE.PlaneGeometry(3.6,2.8),mCarpet); m.rotation.x=-Math.PI/2; m.position.set(2.8,0.004,-1.4); g.add(m); }
 
-  // ─────────────────────────────────────────────────────────────────────────
-  // WORKSTATION ROW — 3 desks, back wall, facing front
-  // X: -3.8, -1.3, +1.2   Z: -3.0 (near back wall Z=-4)
-  // ─────────────────────────────────────────────────────────────────────────
-  [-3.8, -1.3, 1.2].forEach(dx=>{
-    const dz = -2.8;
-    // Desktop
-    bx(1.8,0.06,0.85, mDesk,  dx,0.76,dz);
-    // Back modesty panel
-    bx(1.76,0.42,0.04, mDark, dx,0.55,dz-0.42);
-    // Side panels
-    bx(0.04,0.72,0.83, mDark, dx-0.9,0.36,dz);
-    bx(0.04,0.72,0.83, mDark, dx+0.9,0.36,dz);
-    // Front legs
-    bx(0.06,0.70,0.06, mLeg,  dx-0.84,0.35,dz+0.38);
-    bx(0.06,0.70,0.06, mLeg,  dx+0.84,0.35,dz+0.38);
-
-    // Monitor base + stem + screen  (stem top ≈ 0.80+0.03/2+0.20 = 1.03, screen bottom ≈ 1.22-0.20 = 1.02 — no overlap)
-    bx(0.22,0.03,0.18, mLeg,   dx,0.80,dz-0.08);   // base
-    bx(0.03,0.20,0.03, mLeg,   dx,0.91,dz-0.08);   // stem  (top = 0.91+0.10 = 1.01)
-    bx(0.68,0.40,0.03, mScreen,dx,1.22,dz-0.10);   // screen (bottom = 1.22-0.20 = 1.02)
-
-    // Keyboard
-    bx(0.42,0.013,0.16, mKbd,  dx-0.04,0.765,dz+0.2);
-    // Mouse
-    bx(0.08,0.018,0.12, mMouse,dx+0.24,0.770,dz+0.2);
-
-    // Chair seat
-    bx(0.52,0.06,0.50, mChair, dx,0.50,dz+0.72);
-    // Chair back (behind seat, away from desk)
-    bx(0.50,0.50,0.05, mChairB,dx,0.80,dz+0.97);
-    // Stem
-    cy(0.035,0.40, mLeg,       dx,0.22,dz+0.72);
-    // Armrests
-    bx(0.04,0.04,0.44, mLeg,   dx-0.26,0.60,dz+0.78);
-    bx(0.04,0.04,0.44, mLeg,   dx+0.26,0.60,dz+0.78);
+  // Workstations
+  [-3.8,-1.3,1.2].forEach(dx=>{
+    const dz=-2.8;
+    bx(1.8,0.06,0.85,mDesk,dx,0.76,dz);
+    bx(1.76,0.42,0.04,mDark,dx,0.55,dz-0.42);
+    bx(0.04,0.72,0.83,mDark,dx-0.9,0.36,dz); bx(0.04,0.72,0.83,mDark,dx+0.9,0.36,dz);
+    bx(0.06,0.70,0.06,mLeg,dx-0.84,0.35,dz+0.38); bx(0.06,0.70,0.06,mLeg,dx+0.84,0.35,dz+0.38);
+    bx(0.22,0.03,0.18,mLeg,dx,0.80,dz-0.08); bx(0.03,0.20,0.03,mLeg,dx,0.91,dz-0.08);
+    bx(0.68,0.40,0.03,mScreen,dx,1.22,dz-0.10);
+    bx(0.42,0.013,0.16,mKbd,dx-0.04,0.765,dz+0.2); bx(0.08,0.018,0.12,mMouse,dx+0.24,0.770,dz+0.2);
+    bx(0.52,0.06,0.50,mChair,dx,0.50,dz+0.72); bx(0.50,0.50,0.05,mChairB,dx,0.80,dz+0.97);
+    cy(0.035,0.40,mLeg,dx,0.22,dz+0.72);
+    bx(0.04,0.04,0.44,mLeg,dx-0.26,0.60,dz+0.78); bx(0.04,0.04,0.44,mLeg,dx+0.26,0.60,dz+0.78);
   });
 
-  // ─────────────────────────────────────────────────────────────────────────
-  // MANAGER CORNER — large L-desk, left wall
-  // ─────────────────────────────────────────────────────────────────────────
+  // Manager corner
   {
-    const mx=-3.8, mz=1.5;
-    // Main surface (runs along left wall, X axis)
-    bx(0.85,0.06,1.80, mDesk,  mx,0.76,mz);
-    // Wing (perpendicular, toward center) — starts just after main surface edge
-    bx(1.20,0.06,0.85, mDesk,  mx+1.05,0.76,mz-0.55);
-    // Panels
-    bx(0.04,0.72,1.78, mDark,  mx-0.44,0.36,mz);
-    bx(1.16,0.06,0.04, mDark,  mx+1.05,0.36,mz-0.97);
-    // Legs
-    bx(0.06,0.70,0.06, mLeg,   mx-0.38,0.35,mz-0.86);
-    bx(0.06,0.70,0.06, mLeg,   mx-0.38,0.35,mz+0.86);
-    bx(0.06,0.70,0.06, mLeg,   mx+1.62,0.35,mz-0.97);
-
-    // Two monitors on wing  (stem top ≈ 0.80+0.03/2+0.20 = 1.03, screen bottom ≈ 1.20-0.20 = 1.00)
-    bx(0.22,0.03,0.18, mLeg,   mx+0.75,0.80,mz-0.58);  // base
-    bx(0.03,0.20,0.03, mLeg,   mx+0.75,0.91,mz-0.58);  // stem
-    bx(0.66,0.38,0.03, mScreen,mx+0.75,1.20,mz-0.60);  // screen
-
-    bx(0.22,0.03,0.18, mLeg,   mx+1.30,0.80,mz-0.58);
-    bx(0.03,0.20,0.03, mLeg,   mx+1.30,0.91,mz-0.58);
-    bx(0.66,0.38,0.03, mScreen,mx+1.30,1.20,mz-0.60);
-
-    // Keyboard + mouse
-    bx(0.42,0.013,0.16, mKbd,   mx+1.00,0.765,mz+0.05);
-    bx(0.08,0.018,0.12, mMouse, mx+1.46,0.770,mz+0.05);
-
-    // Phone
-    bx(0.16,0.022,0.11, mCoffee,mx+0.52,0.768,mz+0.05);
-
-    // Gold nameplate on wing
-    bx(0.30,0.018,0.09, mGold, mx+0.75,0.768,mz+0.05);
-
-    // Chair (facing wing desk) — moved further from desk
-    bx(0.54,0.06,0.52, mChair, mx+1.00,0.50,mz+0.90);
-    bx(0.52,0.52,0.05, mChairB,mx+1.00,0.80,mz+1.15);
-    cy(0.035,0.40, mLeg,       mx+1.00,0.22,mz+0.90);
-    bx(0.04,0.04,0.44, mLeg,   mx+0.72,0.60,mz+0.97);
-    bx(0.04,0.04,0.44, mLeg,   mx+1.28,0.60,mz+0.97);
+    const mx=-3.8,mz=1.5;
+    bx(0.85,0.06,1.80,mDesk,mx,0.76,mz); bx(1.20,0.06,0.85,mDesk,mx+1.05,0.76,mz-0.55);
+    bx(0.04,0.72,1.78,mDark,mx-0.44,0.36,mz); bx(1.16,0.06,0.04,mDark,mx+1.05,0.36,mz-0.97);
+    bx(0.06,0.70,0.06,mLeg,mx-0.38,0.35,mz-0.86); bx(0.06,0.70,0.06,mLeg,mx-0.38,0.35,mz+0.86); bx(0.06,0.70,0.06,mLeg,mx+1.62,0.35,mz-0.97);
+    bx(0.22,0.03,0.18,mLeg,mx+0.75,0.80,mz-0.58); bx(0.03,0.20,0.03,mLeg,mx+0.75,0.91,mz-0.58); bx(0.66,0.38,0.03,mScreen,mx+0.75,1.20,mz-0.60);
+    bx(0.22,0.03,0.18,mLeg,mx+1.30,0.80,mz-0.58); bx(0.03,0.20,0.03,mLeg,mx+1.30,0.91,mz-0.58); bx(0.66,0.38,0.03,mScreen,mx+1.30,1.20,mz-0.60);
+    bx(0.42,0.013,0.16,mKbd,mx+1.00,0.765,mz+0.05); bx(0.08,0.018,0.12,mMouse,mx+1.46,0.770,mz+0.05);
+    bx(0.16,0.022,0.11,mCoffee,mx+0.52,0.768,mz+0.05); bx(0.30,0.018,0.09,mGold,mx+0.75,0.768,mz+0.05);
+    bx(0.54,0.06,0.52,mChair,mx+1.00,0.50,mz+0.90); bx(0.52,0.52,0.05,mChairB,mx+1.00,0.80,mz+1.15);
+    cy(0.035,0.40,mLeg,mx+1.00,0.22,mz+0.90);
+    bx(0.04,0.04,0.44,mLeg,mx+0.72,0.60,mz+0.97); bx(0.04,0.04,0.44,mLeg,mx+1.28,0.60,mz+0.97);
   }
 
-  // ─────────────────────────────────────────────────────────────────────────
-  // PARTITION dividing lounge from workstations
-  // ─────────────────────────────────────────────────────────────────────────
-  bx(0.06,1.50,1.60, mPart,  0.90,0.75,0.40);
-  bx(0.06,0.05,1.60, mGold,  0.90,1.54,0.40);   // gold top strip
-  bx(0.06,0.05,1.60, mGold,  0.90,0.01,0.40);   // gold base strip
+  // Partition
+  bx(0.06,1.50,1.60,mPart,0.90,0.75,0.40); bx(0.06,0.05,1.60,mGold,0.90,1.54,0.40); bx(0.06,0.05,1.60,mGold,0.90,0.01,0.40);
 
-  // ─────────────────────────────────────────────────────────────────────────
-  // LOUNGE — sofa + chairs + coffee table  (right side, Z: -2.6 .. -0.4)
-  // ─────────────────────────────────────────────────────────────────────────
+  // Lounge
   {
-    // Main sofa (back against right wall)
-    const sx=3.4, sz=-1.5;
-    // Base + cushion
-    bx(0.55,0.24,2.20, mSofa,  sx,0.12,sz);
-    bx(0.55,0.14,2.20, mSofaL, sx,0.30,sz);
-    // Back
-    bx(0.14,0.52,2.20, mSofaL, sx-0.22,0.52,sz);
-    // Armrests
-    bx(0.53,0.44,0.12, mSofa,  sx,0.22,sz-1.10);
-    bx(0.53,0.44,0.12, mSofa,  sx,0.22,sz+1.10);
-    // Legs
-    [[sx-0.14,sz-1.0],[sx-0.14,sz+1.0]].forEach(([lx,lz])=>
-      bx(0.05,0.06,0.05,mLeg,lx,0.03,lz));
-
-    // Small armchair
-    bx(0.56,0.22,0.56, mSofa,  sx,0.11,sz+1.8);
-    bx(0.56,0.14,0.56, mSofaL, sx,0.29,sz+1.8);
-    bx(0.14,0.50,0.56, mSofaL, sx-0.22,0.51,sz+1.8);
-    bx(0.54,0.44,0.10, mSofa,  sx,0.22,sz+1.8-0.28);
-    bx(0.54,0.44,0.10, mSofa,  sx,0.22,sz+1.8+0.28);
-
-    // Coffee table (in front of sofa, pulled further away)
-    bx(0.88,0.035,0.58, mDesk, sx-0.85,0.40,sz);
-    [[sx-0.82-0.28,sz-0.24],[sx-0.82+0.28,sz-0.24],
-     [sx-0.82-0.28,sz+0.24],[sx-0.82+0.28,sz+0.24]].forEach(([lx,lz])=>
-      bx(0.04,0.38,0.04,mLeg,lx,0.19,lz));
-    // Mug + papers on coffee table
-    cy(0.04,0.08,mMug,  sx-0.82-0.18,0.44,sz-0.08,8);
-    bx(0.19,0.006,0.13, mKbd,sx-0.82+0.15,0.42,sz+0.06);
+    const sx=3.4,sz=-1.5;
+    bx(0.55,0.24,2.20,mSofa,sx,0.12,sz); bx(0.55,0.14,2.20,mSofaL,sx,0.30,sz);
+    bx(0.14,0.52,2.20,mSofaL,sx-0.22,0.52,sz);
+    bx(0.53,0.44,0.12,mSofa,sx,0.22,sz-1.10); bx(0.53,0.44,0.12,mSofa,sx,0.22,sz+1.10);
+    bx(0.56,0.22,0.56,mSofa,sx,0.11,sz+1.8); bx(0.56,0.14,0.56,mSofaL,sx,0.29,sz+1.8);
+    bx(0.14,0.50,0.56,mSofaL,sx-0.22,0.51,sz+1.8);
+    bx(0.88,0.035,0.58,mDesk,sx-0.85,0.40,sz);
+    cy(0.04,0.08,mMug,sx-0.82-0.18,0.44,sz-0.08,8);
+    bx(0.19,0.006,0.13,mKbd,sx-0.82+0.15,0.42,sz+0.06);
   }
 
-  // ─────────────────────────────────────────────────────────────────────────
-  // WHITEBOARD — back wall, center
-  // ─────────────────────────────────────────────────────────────────────────
+  // Whiteboard
   {
-    const wbX=0.2, wbZ=-RD/2+0.05, wbY=2.2, wbW=3.0, wbH=1.35;
-    bx(wbW+0.12,0.055,0.05, mBFrame, wbX,wbY+wbH/2,wbZ);
-    bx(wbW+0.12,0.055,0.05, mBFrame, wbX,wbY-wbH/2,wbZ);
-    bx(0.055,wbH+0.06,0.05, mBFrame, wbX-wbW/2-0.04,wbY,wbZ);
-    bx(0.055,wbH+0.06,0.05, mBFrame, wbX+wbW/2+0.04,wbY,wbZ);
-    bx(wbW,wbH,0.025, mBoard, wbX,wbY,wbZ+0.01);
-    // Marker tray
-    bx(wbW,0.04,0.07, mBFrame,wbX,wbY-wbH/2+0.02,wbZ+0.04);
-
+    const wbX=0.2,wbZ=-RD/2+0.05,wbY=2.2,wbW=3.0,wbH=1.35;
+    bx(wbW+0.12,0.055,0.05,mBFrame,wbX,wbY+wbH/2,wbZ); bx(wbW+0.12,0.055,0.05,mBFrame,wbX,wbY-wbH/2,wbZ);
+    bx(0.055,wbH+0.06,0.05,mBFrame,wbX-wbW/2-0.04,wbY,wbZ); bx(0.055,wbH+0.06,0.05,mBFrame,wbX+wbW/2+0.04,wbY,wbZ);
+    bx(wbW,wbH,0.025,mBoard,wbX,wbY,wbZ+0.01); bx(wbW,0.04,0.07,mBFrame,wbX,wbY-wbH/2+0.02,wbZ+0.04);
     const nbkTex=mkTex(512,256,(ctx,w,h)=>{
       ctx.fillStyle='#f2f2ee'; ctx.fillRect(0,0,w,h);
-      ctx.font='bold 42px Arial'; ctx.textAlign='center';
-      ctx.fillStyle='#0a246a';
-      ctx.fillText('DIGITAL', w/2,h*0.26);
-      ctx.font='bold 36px Arial'; ctx.fillStyle='#0a246a';
-      ctx.fillText('DEVELOPMENT', w/2,h*0.50);
-      ctx.font='bold 36px Arial'; ctx.fillStyle='#b8800a';
-      ctx.fillText('CENTER', w/2,h*0.72);
+      ctx.textAlign='center';
+      ctx.font='bold 42px Arial'; ctx.fillStyle='#0a246a'; ctx.fillText('DIGITAL',w/2,h*0.26);
+      ctx.font='bold 36px Arial'; ctx.fillText('DEVELOPMENT',w/2,h*0.50);
+      ctx.fillStyle='#b8800a'; ctx.fillText('CENTER',w/2,h*0.72);
       ctx.strokeStyle='#b8800a'; ctx.lineWidth=2.5;
       ctx.beginPath(); ctx.moveTo(55,h*0.83); ctx.lineTo(w-55,h*0.83); ctx.stroke();
-      ctx.font='13px Arial'; ctx.fillStyle='#555';
-      ctx.fillText('DDC · National Bank of Kazakhstan', w/2,h*0.93);
+      ctx.font='13px Arial'; ctx.fillStyle='#555'; ctx.fillText('DDC · National Bank of Kazakhstan',w/2,h*0.93);
     });
-    const nb=new THREE.Mesh(new THREE.PlaneGeometry(wbW-0.08,wbH-0.08),
-      new THREE.MeshStandardMaterial({map:nbkTex,roughness:0.95,emissive:0xffffff,emissiveIntensity:0.05}));
+    const nb=new THREE.Mesh(new THREE.PlaneGeometry(wbW-0.08,wbH-0.08),new THREE.MeshStandardMaterial({map:nbkTex,roughness:0.95,emissive:0xffffff,emissiveIntensity:0.05}));
     nb.position.set(wbX,wbY,wbZ+0.025); g.add(nb);
-
-    // Coloured markers
     const markerColors=[0xff2200,0x0044ff,0x00aa22,0xff8800];
-    [-0.7,-0.3,0.1,0.5].forEach((mx,i)=>
-      cy(0.025,0.10,new THREE.MeshStandardMaterial({color:markerColors[i],roughness:0.5}),
-        wbX+mx,wbY-wbH/2+0.025,wbZ+0.06,6));
+    [-0.7,-0.3,0.1,0.5].forEach((mx,i)=>cy(0.025,0.10,new THREE.MeshStandardMaterial({color:markerColors[i],roughness:0.5}),wbX+mx,wbY-wbH/2+0.025,wbZ+0.06,6));
   }
 
-  // ─────────────────────────────────────────────────────────────────────────
-  // TV / DASHBOARD — right wall (X=+5), facing left
-  // ─────────────────────────────────────────────────────────────────────────
+  // TV Dashboard
   {
-    const tvY=2.2, tvZ=-1.5;
-    // Housing
-    bx(0.045,1.20,2.10, new THREE.MeshStandardMaterial({color:0x111111,roughness:0.2,metalness:0.5}),
-       RW/2-0.06,tvY,tvZ);
-    // Screen canvas
+    const tvY=2.2,tvZ=-1.5;
+    bx(0.045,1.20,2.10,new THREE.MeshStandardMaterial({color:0x111111,roughness:0.2,metalness:0.5}),RW/2-0.06,tvY,tvZ);
     const tvTex=mkTex(512,256,(ctx,w,h)=>{
-      const g2=ctx.createLinearGradient(0,0,w,h);
-      g2.addColorStop(0,'#040e20'); g2.addColorStop(1,'#061428');
-      ctx.fillStyle=g2; ctx.fillRect(0,0,w,h);
+      ctx.fillStyle='#040e20'; ctx.fillRect(0,0,w,h);
       ctx.strokeStyle='rgba(20,60,160,0.22)'; ctx.lineWidth=1;
       for(let i=0;i<=w;i+=48){ctx.beginPath();ctx.moveTo(i,0);ctx.lineTo(i,h);ctx.stroke();}
       for(let j=0;j<=h;j+=36){ctx.beginPath();ctx.moveTo(0,j);ctx.lineTo(w,j);ctx.stroke();}
-      // bars
-      const bars=[[40,180,40,60],[100,165,40,75],[160,172,40,68],
-                  [220,150,40,90],[280,158,40,82],[340,142,40,98],[400,160,40,80]];
-      bars.forEach(([x,y,bw,bh])=>{
-        ctx.fillStyle='rgba(25,100,220,0.55)'; ctx.fillRect(x,y,bw,bh);
-        ctx.fillStyle='rgba(60,160,255,0.4)';  ctx.fillRect(x,y,bw,8);
-      });
-      ctx.strokeStyle='rgba(80,160,255,0.7)'; ctx.lineWidth=2;
-      ctx.beginPath(); ctx.moveTo(20,175);
-      bars.forEach(([x,,bw],i)=>ctx.lineTo(x+bw/2, 120+Math.sin(i*1.1)*30));
-      ctx.stroke();
-      ctx.fillStyle='rgba(255,185,30,0.95)'; ctx.font='bold 20px Arial';
-      ctx.textAlign='center'; ctx.fillText('NBK ANALYTICS DASHBOARD',w/2,26);
-      ctx.font='12px Arial'; ctx.fillStyle='rgba(160,200,255,0.7)';
-      ctx.fillText('Real-time · June 2026',w/2,46);
+      [[40,180,40,60],[100,165,40,75],[160,172,40,68],[220,150,40,90],[280,158,40,82],[340,142,40,98],[400,160,40,80]]
+        .forEach(([x,y,bw,bh])=>{ctx.fillStyle='rgba(25,100,220,0.55)';ctx.fillRect(x,y,bw,bh);ctx.fillStyle='rgba(60,160,255,0.4)';ctx.fillRect(x,y,bw,8);});
+      ctx.fillStyle='rgba(255,185,30,0.95)'; ctx.font='bold 20px Arial'; ctx.textAlign='center';
+      ctx.fillText('NBK ANALYTICS DASHBOARD',w/2,26);
+      ctx.font='12px Arial'; ctx.fillStyle='rgba(160,200,255,0.7)'; ctx.fillText('Real-time · June 2026',w/2,46);
     });
-    const tvMesh=new THREE.Mesh(new THREE.PlaneGeometry(1.92,1.08),
-      new THREE.MeshStandardMaterial({map:tvTex,roughness:0.04,emissive:0x1030a0,emissiveIntensity:0.55}));
-    tvMesh.rotation.y=-Math.PI/2;
-    tvMesh.position.set(RW/2-0.065,tvY,tvZ); g.add(tvMesh);
-    // Mount
-    bx(0.22,0.07,0.07,mLeg, RW/2-0.22,tvY,tvZ);
-    // Glow
-    const tvLight=new THREE.PointLight(0x1840c0,1.2,4.5);
-    tvLight.position.set(RW/2-1.2,tvY,tvZ); g.add(tvLight);
+    const tvMesh=new THREE.Mesh(new THREE.PlaneGeometry(1.92,1.08),new THREE.MeshStandardMaterial({map:tvTex,roughness:0.04,emissive:0x1030a0,emissiveIntensity:0.55}));
+    tvMesh.rotation.y=-Math.PI/2; tvMesh.position.set(RW/2-0.065,tvY,tvZ); g.add(tvMesh);
+    bx(0.22,0.07,0.07,mLeg,RW/2-0.22,tvY,tvZ);
+    const tvLight=new THREE.PointLight(0x1840c0,1.2,4.5); tvLight.position.set(RW/2-1.2,tvY,tvZ); g.add(tvLight);
   }
 
-  // ─────────────────────────────────────────────────────────────────────────
-  // KITCHEN CORNER — front-right  (X: 2.5..4.5, Z: 3.0..3.9)
-  // ─────────────────────────────────────────────────────────────────────────
-  {
-    const kx=3.2, kz=3.3;
-    // Base cabinet
-    bx(1.50,0.84,0.50, mDark,  kx,0.42,kz);
-    bx(1.50,0.06,0.50, mDesk,  kx,0.88,kz);   // counter top
-    // Cabinet doors
-    bx(0.68,0.76,0.03, mDesk,  kx-0.38,0.44,kz+0.26);
-    bx(0.68,0.76,0.03, mDesk,  kx+0.38,0.44,kz+0.26);
-    // Handles
-    cy(0.013,0.18,mLeg, kx-0.06,0.44,kz+0.28,6);
-    cy(0.013,0.18,mLeg, kx+0.06,0.44,kz+0.28,6);
-    // Coffee machine
-    bx(0.20,0.26,0.20, mCoffee,kx-0.45,1.02,kz+0.08);
-    cy(0.045,0.05,new THREE.MeshStandardMaterial({color:0x6a3010,roughness:0.5,emissive:0x3a1800,emissiveIntensity:0.4}),
-       kx-0.45,1.16,kz+0.17,8);
-    // Mugs
+  // Kitchen (пропускаем на мобиле для экономии draw calls)
+  if(!isMobile){
+    const kx=3.2,kz=3.3;
+    bx(1.50,0.84,0.50,mDark,kx,0.42,kz); bx(1.50,0.06,0.50,mDesk,kx,0.88,kz);
+    bx(0.68,0.76,0.03,mDesk,kx-0.38,0.44,kz+0.26); bx(0.68,0.76,0.03,mDesk,kx+0.38,0.44,kz+0.26);
+    bx(0.20,0.26,0.20,mCoffee,kx-0.45,1.02,kz+0.08);
     [[kx+0.10],[kx+0.32],[kx+0.52]].forEach(([mx])=>cy(0.045,0.08,mMug,mx,1.0,kz+0.07,8));
-    // Wall cabinet
-    bx(1.50,0.48,0.26, mDark,  kx,1.44,kz+0.12);
-    bx(0.68,0.40,0.03, mDesk,  kx-0.38,1.44,kz+0.26);
-    bx(0.68,0.40,0.03, mDesk,  kx+0.38,1.44,kz+0.26);
-    // Fridge
-    bx(0.44,1.58,0.46, mFridge,kx+1.06,0.79,kz-0.02);
-    bx(0.025,0.07,0.10,mLeg,   kx+0.82,0.88,kz+0.20);
+    bx(1.50,0.48,0.26,mDark,kx,1.44,kz+0.12);
+    bx(0.44,1.58,0.46,mFridge,kx+1.06,0.79,kz-0.02);
   }
 
-  // ─────────────────────────────────────────────────────────────────────────
-  // PLANTS — corners and accent spots
-  // ─────────────────────────────────────────────────────────────────────────
-  [[-4.5,0,-3.5],[ 4.4,0,-3.5],
-   [-4.5,0, 3.5],[ 4.3,0, 3.0],
-   [ 0.4,0, 3.5]].forEach(([px,,pz])=>{
-    cy(0.12,0.24,mPlantP,  px,0.12,pz,10);
-    sp(0.24,mPlant,        px,0.42,pz);
-    sp(0.16,mPlant,        px+0.14,0.36,pz+0.08);
-    sp(0.14,mPlant,        px-0.10,0.33,pz-0.10);
+  // Plants
+  [[-4.5,0,-3.5],[4.4,0,-3.5],[-4.5,0,3.5],[4.3,0,3.0],[0.4,0,3.5]].forEach(([px,,pz])=>{
+    cy(0.12,0.24,mPlantP,px,0.12,pz,10);
+    sp(0.24,mPlant,px,0.42,pz); sp(0.16,mPlant,px+0.14,0.36,pz+0.08); sp(0.14,mPlant,px-0.10,0.33,pz-0.10);
   });
 
-  // ─────────────────────────────────────────────────────────────────────────
-  // EXTRA CEILING FIXTURES (6 lamps for full floor brightness)
-  // ─────────────────────────────────────────────────────────────────────────
+  // Extra ceiling fixtures (floor 13)
   [[-3.2,RH-0.03,-2.0],[0,RH-0.03,-2.0],[3.0,RH-0.03,-2.0],
-   [-3.2,RH-0.03, 1.5],[0,RH-0.03, 1.5],[3.0,RH-0.03, 1.5]].forEach(([lx,ly,lz])=>{
-    bx(0.20,0.045,1.10, new THREE.MeshStandardMaterial({color:0xccd0da,roughness:0.5,metalness:0.4}),lx,ly,lz);
-    bx(0.16,0.020,1.0,  lampMat,lx,ly-0.034,lz);
+   [-3.2,RH-0.03,1.5],[0,RH-0.03,1.5],[3.0,RH-0.03,1.5]].forEach(([lx,ly,lz])=>{
+    bx(0.20,0.045,1.10,new THREE.MeshStandardMaterial({color:0xccd0da,roughness:0.5,metalness:0.4}),lx,ly,lz);
+    bx(0.16,0.020,1.0,lampMat,lx,ly-0.034,lz);
     const pl=new THREE.SpotLight(0xfff8e8,3.8,9,Math.PI/2.3,0.55,1.2);
-    pl.position.set(lx,ly-0.05,lz);
-    pl.target.position.set(lx,0,lz);
-    g.add(pl); g.add(pl.target);
+    pl.position.set(lx,ly-0.05,lz); pl.target.position.set(lx,0,lz); g.add(pl); g.add(pl.target);
   });
 
   scene.add(g);
 })();
 
-// Global ambient / hemisphere light
-scene.add(new THREE.AmbientLight(0x2a3a5a,0.7));
+// ── Lights ────────────────────────────────────────────────────────────────────
+scene.add(new THREE.AmbientLight(0x2a3a5a, isMobile ? 1.2 : 0.7));
 scene.add(new THREE.HemisphereLight(0x4466aa,0x111122,0.5));
 
-// ── Exterior signs on right side wall (X = +RW/2) ────────────────────────────
-// Floor 14: "DIGITAL / DEVELOPMENT / CENTER"  (3 lines, blue)
-// Floor 13: "NATIONAL BANK / OF KAZAKHSTAN"   (2 lines, gold)
-// Floor 15: empty (just the regular floor above the signs)
-function makeSignTex(lines, color){
-  const W=1024, H=512;
-  const c=document.createElement('canvas'); c.width=W; c.height=H;
+// ── Exterior signs ────────────────────────────────────────────────────────────
+function makeSignTex(lines,color){
+  const W=1024,H=512,c=document.createElement('canvas'); c.width=W; c.height=H;
   const ctx=c.getContext('2d');
   ctx.clearRect(0,0,W,H);
-  // Soft glow bg
-  const rg=ctx.createRadialGradient(W/2,H/2,20,W/2,H/2,W*0.5);
-  rg.addColorStop(0,`rgba(${color},0.12)`); rg.addColorStop(1,'rgba(0,0,0,0)');
-  ctx.fillStyle=rg; ctx.fillRect(0,0,W,H);
-
-  const n=lines.length;
-  const lineH=H/n;
-  // pick font size that fits: try 80% of lineH, but cap so text stays within width
-  const fs=Math.floor(lineH*0.68);
+  const n=lines.length,lineH=H/n,fs=Math.floor(lineH*0.68);
   ctx.font=`bold ${fs}px "Arial Black",Arial`;
-  // measure longest line and scale down if needed
   const maxW=lines.reduce((mx,t)=>Math.max(mx,ctx.measureText(t).width),0);
-  const scale=Math.min(1,(W-60)/maxW);
-  const finalFs=Math.floor(fs*scale);
-
+  const finalFs=Math.floor(fs*Math.min(1,(W-60)/maxW));
   lines.forEach((txt,i)=>{
-    const yc=(i+0.5)*lineH;
-    ctx.save();
-    ctx.font=`bold ${finalFs}px "Arial Black",Arial`;
+    ctx.save(); ctx.font=`bold ${finalFs}px "Arial Black",Arial`;
     ctx.textAlign='center'; ctx.textBaseline='middle';
     ctx.shadowColor=`rgba(${color},1)`; ctx.shadowBlur=30;
     const tg=ctx.createLinearGradient(W/2-W*0.4,0,W/2+W*0.4,0);
-    tg.addColorStop(0,`rgba(${color},0.7)`);
-    tg.addColorStop(0.3,'#ffffff');
-    tg.addColorStop(0.7,'#ffffff');
-    tg.addColorStop(1,`rgba(${color},0.7)`);
-    ctx.fillStyle=tg;
-    ctx.fillText(txt,W/2,yc);
-    ctx.restore();
+    tg.addColorStop(0,`rgba(${color},0.7)`); tg.addColorStop(0.3,'#ffffff');
+    tg.addColorStop(0.7,'#ffffff'); tg.addColorStop(1,`rgba(${color},0.7)`);
+    ctx.fillStyle=tg; ctx.fillText(txt,W/2,(i+0.5)*lineH); ctx.restore();
   });
-  // accent line bottom
-  const al=ctx.createLinearGradient(0,0,W,0);
-  al.addColorStop(0,'rgba(0,0,0,0)');
-  al.addColorStop(0.2,`rgba(${color},0.8)`);
-  al.addColorStop(0.8,`rgba(${color},0.8)`);
-  al.addColorStop(1,'rgba(0,0,0,0)');
-  ctx.fillStyle=al; ctx.fillRect(40,H-10,W-80,4);
   return new THREE.CanvasTexture(c);
 }
+[
+  { flY:14*RH+RH/2, lines:['DIGITAL','DEVELOPMENT','CENTER'], color:'40,130,255',  h:RH*0.9,  em:0x081830, lc:0x1144ff, li:1.5 },
+  { flY:13*RH+RH/2, lines:['NATIONAL BANK','OF KAZAKHSTAN'],  color:'255,185,30', h:RH*0.72, em:0x1a0d00, lc:0xffaa00, li:1.2 },
+].forEach(({flY,lines,color,h,em,lc,li})=>{
+  const tex=makeSignTex(lines,color);
+  const mat=new THREE.MeshStandardMaterial({map:tex,transparent:true,opacity:1,emissive:new THREE.Color(em),emissiveIntensity:0.4,roughness:0.1,metalness:0,side:THREE.FrontSide,depthWrite:false});
+  const mesh=new THREE.Mesh(new THREE.PlaneGeometry(RD*0.92,h),mat);
+  mesh.position.set(RW/2+0.06,flY,0); mesh.rotation.y=Math.PI/2; scene.add(mesh);
+  const gl=new THREE.PointLight(lc,li,9); gl.position.set(RW/2+1.5,flY,0); scene.add(gl);
+});
 
-// Floor 14 sign — DIGITAL / DEVELOPMENT / CENTER
-{
-  const flY=14*RH+RH/2;
-  const tex=makeSignTex(['DIGITAL','DEVELOPMENT','CENTER'],'40,130,255');
-  const mat=new THREE.MeshStandardMaterial({
-    map:tex,transparent:true,opacity:1,
-    emissive:new THREE.Color(0x081830),emissiveIntensity:0.5,
-    roughness:0.1,metalness:0,side:THREE.FrontSide,depthWrite:false
+// ── Frustum culling по этажам ─────────────────────────────────────────────────
+function updateFloorVisibility(){
+  const camY = camera.position.y;
+  floorGroups.forEach((grp, i) => {
+    const dist = Math.abs(i * RH - camY);
+    grp.visible = dist < (isMobile ? 32 : 60);
   });
-  // plane sized to match the wall face: RD wide, RH tall, placed just outside wall
-  const mesh=new THREE.Mesh(new THREE.PlaneGeometry(RD*0.92,RH*0.9),mat);
-  mesh.position.set(RW/2+0.06,flY,0);
-  mesh.rotation.y=Math.PI/2;
-  scene.add(mesh);
-  const gl=new THREE.PointLight(0x1144ff,1.5,9);
-  gl.position.set(RW/2+1.5,flY,0);scene.add(gl);
 }
 
-// Floor 13 sign — NATIONAL BANK / OF KAZAKHSTAN
-{
-  const flY=13*RH+RH/2;
-  const tex=makeSignTex(['NATIONAL BANK','OF KAZAKHSTAN'],'255,185,30');
-  const mat=new THREE.MeshStandardMaterial({
-    map:tex,transparent:true,opacity:1,
-    emissive:new THREE.Color(0x1a0d00),emissiveIntensity:0.4,
-    roughness:0.1,metalness:0,side:THREE.FrontSide,depthWrite:false
-  });
-  const mesh=new THREE.Mesh(new THREE.PlaneGeometry(RD*0.92,RH*0.72),mat);
-  mesh.position.set(RW/2+0.06,flY,0);
-  mesh.rotation.y=Math.PI/2;
-  scene.add(mesh);
-  const gl=new THREE.PointLight(0xffaa00,1.2,8);
-  gl.position.set(RW/2+1.5,flY,0);scene.add(gl);
-}
+// ── Emissive pulse — собираем один раз ───────────────────────────────────────
+const pulseMeshes = [];
+scene.traverse(obj => {
+  if(obj.isMesh && obj.material.emissiveIntensity !== undefined
+     && obj.material.emissiveIntensity > 0
+     && obj.material.emissiveIntensity < 0.5){
+    pulseMeshes.push(obj);
+  }
+});
 
 // ── Render loop ───────────────────────────────────────────────────────────────
-let t=0;
-const _tmpPos=new THREE.Vector3();
-const _tmpTgt=new THREE.Vector3();
+let t = 0;
+// На мобиле пульсацию делаем реже
+let pulseFrame = 0;
+
 function animate(){
   requestAnimationFrame(animate);
-  t+=0.012;
+  t += 0.012;
 
-  // Emissive pulse on lamps
-  scene.traverse(obj=>{
-    if(obj.isMesh && obj.material.emissiveIntensity!==undefined && obj.material.emissiveIntensity>0 && obj.material.emissiveIntensity<0.5)
-      obj.material.emissiveIntensity=0.15+Math.sin(t*2.3)*0.04;
-  });
-
-  // Scroll-driven camera
-  if(!manualControl){
-    const cf=getKeyframedCamera(scrollProgress);
-    // Smooth damp toward target
-    camPos.lerp(cf.pos, 0.06);
-    camTgt.lerp(cf.tgt, 0.06);
-    camera.position.copy(camPos);
-    camera.lookAt(camTgt);
+  // Пульсация emissive — на мобиле через кадр
+  pulseFrame++;
+  if(!isMobile || pulseFrame % 2 === 0){
+    const v = 0.15 + Math.sin(t * 2.3) * 0.04;
+    pulseMeshes.forEach(m => { m.material.emissiveIntensity = v; });
   }
 
-  renderer.render(scene,camera);
+  // Scroll-driven camera
+  const cf = getKeyframedCamera(scrollProgress);
+  camPos.lerp(cf.pos, 0.06);
+  camTgt.lerp(cf.tgt, 0.06);
+  camera.position.copy(camPos);
+  camera.lookAt(camTgt);
+
+  // Frustum culling по этажам
+  updateFloorVisibility();
+
+  renderer.render(scene, camera);
 }
 animate();
 
-// Логика открытия/закрытия мобильного меню
+// ── Navbar toggle ─────────────────────────────────────────────────────────────
 const navToggle = document.getElementById('nav-toggle');
-const navbar = document.getElementById('navbar');
-
-if (navToggle && navbar) {
-  navToggle.addEventListener('click', (e) => {
-    e.stopPropagation();
-    navbar.classList.toggle('nav-open');
-  });
-
-  // Закрываем меню при клике на любую ссылку
-  document.querySelectorAll('#navbar .nav-link').forEach(link => {
-    link.addEventListener('click', () => {
-      navbar.classList.remove('nav-open');
-    });
-  });
-
-  // Закрываем меню при клике вне навигационной панели
-  document.addEventListener('click', (e) => {
-    if (!navbar.contains(e.target)) {
-      navbar.classList.remove('nav-open');
-    }
-  });
+const navbar    = document.getElementById('navbar');
+if(navToggle && navbar){
+  navToggle.addEventListener('click', e=>{ e.stopPropagation(); navbar.classList.toggle('nav-open'); });
+  document.querySelectorAll('#navbar .nav-link').forEach(l=>l.addEventListener('click',()=>navbar.classList.remove('nav-open')));
+  document.addEventListener('click', e=>{ if(!navbar.contains(e.target)) navbar.classList.remove('nav-open'); });
 }
 </script>
 </body>
