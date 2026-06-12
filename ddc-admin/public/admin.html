@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>ЦЦР — Админ-панель</title>
+<style>
+  :root{
+    --bg:#0a1426; --bg2:#0e1c34; --panel:#102342;
+    --line:rgba(120,165,235,.16); --line2:rgba(120,165,235,.28);
+    --text:#e8eefb; --muted:#90a6cc; --muted2:#6f86ab;
+    --blue:#2f6fe0; --blue2:#1c4fb0; --blueDeep:#0b2a66;
+    --accentGrad:linear-gradient(135deg,#2f6fe0,#1c4fb0);
+    --ok:#1f9d57; --warn:#c8960c; --hold:#7a8aa8; --rej:#c0455a; --prog:#2f6fe0;
+    --radius:14px; --shadow:0 10px 40px rgba(0,0,0,.45);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{height:100%}
+  body{
+    font-family:'Inter',system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
+    background:
+      radial-gradient(1200px 600px at 80% -10%, rgba(47,111,224,.18), transparent 60%),
+      radial-gradient(900px 500px at -10% 110%, rgba(28,79,176,.16), transparent 55%),
+      var(--bg);
+    color:var(--text); -webkit-font-smoothing:antialiased;
+  }
+  a{color:inherit}
+  .hidden{display:none!important}
+
+  /* ── Логин ─────────────────────────────────────────────── */
+  #login-screen{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px}
+  .login-card{
+    width:min(380px,100%);background:linear-gradient(160deg,var(--bg2),#0b1830);
+    border:1px solid var(--line);border-radius:var(--radius);padding:30px 28px;box-shadow:var(--shadow)
+  }
+  .login-logo{display:flex;align-items:center;gap:10px;margin-bottom:22px}
+  .login-logo .dot{width:12px;height:12px;border-radius:50%;background:var(--accentGrad)}
+  .login-logo b{font-size:16px;letter-spacing:.04em}
+  .login-card h1{font-size:19px;margin-bottom:4px}
+  .login-card p{font-size:13px;color:var(--muted);margin-bottom:20px}
+  .field{margin-bottom:14px}
+  .field label{display:block;font-size:12px;color:var(--muted);margin-bottom:6px}
+  .input{
+    width:100%;background:rgba(255,255,255,.04);border:1px solid var(--line2);
+    border-radius:9px;padding:11px 13px;color:var(--text);font-size:14px;font-family:inherit;outline:none;
+    transition:border-color .2s
+  }
+  .input:focus{border-color:var(--blue)}
+  .btn{
+    width:100%;border:none;border-radius:9px;padding:12px;cursor:pointer;
+    background:var(--accentGrad);color:#fff;font-size:14px;font-weight:600;font-family:inherit;
+    letter-spacing:.02em;transition:transform .15s,filter .15s
+  }
+  .btn:hover{filter:brightness(1.08);transform:translateY(-1px)}
+  .btn:active{transform:none}
+  .login-err{color:#ff8a9c;font-size:13px;margin-top:10px;min-height:18px}
+  .login-hint{margin-top:16px;font-size:11px;color:var(--muted2);text-align:center}
+
+  /* ── Шапка ─────────────────────────────────────────────── */
+  header.topbar{
+    position:sticky;top:0;z-index:10;display:flex;align-items:center;gap:14px;
+    padding:14px 22px;background:rgba(10,20,38,.82);backdrop-filter:blur(14px);
+    border-bottom:1px solid var(--line)
+  }
+  .topbar .brand{display:flex;align-items:center;gap:10px;font-weight:700;letter-spacing:.04em}
+  .topbar .brand .dot{width:11px;height:11px;border-radius:50%;background:var(--accentGrad)}
+  .topbar .brand small{font-weight:500;color:var(--muted);font-size:12px;letter-spacing:0}
+  .topbar .spacer{flex:1}
+  .topbar .who{font-size:13px;color:var(--muted)}
+  .btn-ghost{
+    background:rgba(255,255,255,.05);border:1px solid var(--line2);color:var(--text);
+    border-radius:8px;padding:8px 14px;font-size:13px;cursor:pointer;font-family:inherit;transition:background .2s
+  }
+  .btn-ghost:hover{background:rgba(120,165,235,.16)}
+  a.btn-ghost{text-decoration:none;display:inline-block}
+
+  main{padding:22px;max-width:1280px;margin:0 auto}
+
+  /* ── Карточки статистики ───────────────────────────────── */
+  .stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:14px;margin-bottom:22px}
+  .stat{
+    background:linear-gradient(160deg,var(--panel),#0c1d39);border:1px solid var(--line);
+    border-radius:var(--radius);padding:16px 18px;position:relative;overflow:hidden
+  }
+  .stat::before{content:"";position:absolute;left:0;top:0;bottom:0;width:4px;background:var(--blue)}
+  .stat.s-new::before{background:var(--warn)}
+  .stat.s-prog::before{background:var(--prog)}
+  .stat.s-hold::before{background:var(--hold)}
+  .stat.s-served::before{background:var(--ok)}
+  .stat.s-total::before{background:linear-gradient(180deg,#2f6fe0,#c8960c)}
+  .stat .k{font-size:12px;color:var(--muted);letter-spacing:.02em}
+  .stat .v{font-size:30px;font-weight:700;margin-top:6px}
+
+  /* ── Фильтры ───────────────────────────────────────────── */
+  .toolbar{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-bottom:14px}
+  .toolbar .search{flex:1;min-width:200px}
+  .seg{display:flex;gap:4px;background:rgba(255,255,255,.04);border:1px solid var(--line);border-radius:10px;padding:3px;flex-wrap:wrap}
+  .seg button{
+    background:transparent;border:none;color:var(--muted);font-family:inherit;font-size:12.5px;
+    padding:7px 12px;border-radius:8px;cursor:pointer;transition:background .15s,color .15s
+  }
+  .seg button:hover{color:#fff}
+  .seg button.active{background:var(--accentGrad);color:#fff}
+
+  /* ── Таблица ───────────────────────────────────────────── */
+  .table-wrap{background:linear-gradient(160deg,var(--panel),#0c1d39);border:1px solid var(--line);border-radius:var(--radius);overflow:hidden}
+  table{width:100%;border-collapse:collapse;font-size:13.5px}
+  thead th{
+    text-align:left;padding:13px 14px;font-size:11.5px;letter-spacing:.04em;text-transform:uppercase;
+    color:var(--muted);background:rgba(255,255,255,.02);border-bottom:1px solid var(--line);white-space:nowrap
+  }
+  tbody td{padding:12px 14px;border-bottom:1px solid rgba(120,165,235,.08);vertical-align:top}
+  tbody tr:hover{background:rgba(120,165,235,.05)}
+  .who-name{font-weight:600}
+  .who-sub{color:var(--muted);font-size:12px;margin-top:2px}
+  .muted{color:var(--muted)}
+  .nowrap{white-space:nowrap}
+
+  /* статус-селект */
+  .status-select{
+    appearance:none;border-radius:8px;padding:7px 28px 7px 11px;font-size:12.5px;font-weight:600;
+    font-family:inherit;cursor:pointer;border:1px solid var(--line2);color:#fff;outline:none;
+    background:#13294d url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='none' stroke='%2390a6cc' stroke-width='2'><path d='M2 4l4 4 4-4'/></svg>") no-repeat right 9px center
+  }
+  .status-select.st-new{border-color:var(--warn);color:#ffd98a}
+  .status-select.st-in_progress{border-color:var(--prog);color:#9fc0ff}
+  .status-select.st-on_hold{border-color:var(--hold);color:#c3cee0}
+  .status-select.st-served{border-color:var(--ok);color:#7fe0a6}
+  .status-select.st-rejected{border-color:var(--rej);color:#ff9aab}
+
+  /* оценка звёздами */
+  .stars{display:flex;gap:3px}
+  .stars .star{cursor:pointer;font-size:17px;line-height:1;color:#3a4d72;transition:color .12s,transform .12s}
+  .stars .star.on{color:#ffc24a}
+  .stars .star:hover{transform:scale(1.18)}
+
+  /* комментарий */
+  .comment-box{display:flex;flex-direction:column;gap:6px;min-width:200px}
+  .comment-box textarea{
+    width:100%;min-height:46px;resize:vertical;background:rgba(255,255,255,.04);border:1px solid var(--line2);
+    border-radius:8px;padding:8px 10px;color:var(--text);font-size:12.5px;font-family:inherit;outline:none
+  }
+  .comment-box textarea:focus{border-color:var(--blue)}
+  .save-row{display:flex;align-items:center;gap:8px}
+  .btn-sm{background:var(--accentGrad);border:none;color:#fff;border-radius:7px;padding:6px 12px;font-size:12px;font-weight:600;cursor:pointer;font-family:inherit}
+  .saved-tag{font-size:11px;color:var(--ok);opacity:0;transition:opacity .2s}
+  .saved-tag.show{opacity:1}
+
+  .empty{padding:50px 20px;text-align:center;color:var(--muted)}
+  .toast{
+    position:fixed;right:18px;bottom:18px;background:#10243f;border:1px solid var(--line2);
+    color:var(--text);padding:12px 16px;border-radius:10px;font-size:13px;box-shadow:var(--shadow);
+    opacity:0;transform:translateY(8px);transition:.25s;z-index:50
+  }
+  .toast.show{opacity:1;transform:none}
+  .toast.err{border-color:var(--rej)}
+
+  @media(max-width:820px){
+    thead{display:none}
+    table,tbody,tr,td{display:block;width:100%}
+    tbody tr{border-bottom:1px solid var(--line);padding:8px 0}
+    tbody td{border:none;padding:7px 14px}
+    tbody td::before{content:attr(data-label);display:block;font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.04em;margin-bottom:4px}
+  }
+</style>
+</head>
+<body>
+
+<!-- ── Экран входа ─────────────────────────────────────────── -->
+<div id="login-screen">
+  <div class="login-card">
+    <div class="login-logo"><span class="dot"></span><b>DDC · Админ</b></div>
+    <h1>Вход в панель</h1>
+    <p>Центр цифрового развития НБК</p>
+    <div class="field">
+      <label>Логин</label>
+      <input id="login-username" class="input" type="text" autocomplete="username" value="">
+    </div>
+    <div class="field">
+      <label>Пароль</label>
+      <input id="login-password" class="input" type="password" autocomplete="current-password" value="">
+    </div>
+    <button class="btn" id="login-btn">Войти</button>
+    <div class="login-err" id="login-err"></div>
+    <div class="login-hint">Доступ только для администратора</div>
+  </div>
+</div>
+
+<!-- ── Панель ──────────────────────────────────────────────── -->
+<div id="app" class="hidden">
+  <header class="topbar">
+    <div class="brand"><span class="dot"></span>DDC <small>Админ-панель</small></div>
+    <div class="spacer"></div>
+    <span class="who" id="who"></span>
+    <a class="btn-ghost" href="/">← На сайт</a>
+    <button class="btn-ghost" id="logout-btn">Выйти</button>
+  </header>
+
+  <main>
+    <section class="stats" id="stats">
+      <div class="stat s-total"><div class="k">Всего клиентов</div><div class="v" id="st-total">—</div></div>
+      <div class="stat s-new"><div class="k">Новые</div><div class="v" id="st-new">—</div></div>
+      <div class="stat s-prog"><div class="k">В процессе</div><div class="v" id="st-in_progress">—</div></div>
+      <div class="stat s-hold"><div class="k">Отложены</div><div class="v" id="st-on_hold">—</div></div>
+      <div class="stat s-served"><div class="k">Обслужены</div><div class="v" id="st-served">—</div></div>
+    </section>
+
+    <div class="toolbar">
+      <input class="input search" id="search" placeholder="Поиск по ФИО, email, телефону…">
+      <div class="seg" id="filter">
+        <button data-f="" class="active">Все</button>
+        <button data-f="new">Новые</button>
+        <button data-f="in_progress">В процессе</button>
+        <button data-f="on_hold">Отложены</button>
+        <button data-f="served">Обслужены</button>
+        <button data-f="rejected">Отказ</button>
+      </div>
+      <button class="btn-ghost" id="refresh">Обновить</button>
+    </div>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Клиент</th>
+            <th>Вопрос</th>
+            <th>Статус</th>
+            <th>Оценка</th>
+            <th>Комментарий</th>
+            <th class="nowrap">Дата</th>
+          </tr>
+        </thead>
+        <tbody id="tbody"></tbody>
+      </table>
+      <div class="empty hidden" id="empty">Заявок пока нет.</div>
+    </div>
+  </main>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// ── Конфиг ────────────────────────────────────────────────────────────────────
+// Адрес бэкенда. Если админка раздаётся ТЕМ ЖЕ сервером (server.js /public) —
+// оставь пустым: возьмётся текущий origin. Если admin.html лежит отдельно от
+// бэкенда — впиши адрес, напр. 'http://localhost:3000' или 'https://api.domen.kz'.
+const API_OVERRIDE = '';
+const API = API_OVERRIDE
+  || ((location.origin && location.origin.startsWith('http')) ? location.origin : 'http://localhost:3000');
+
+const STATUS_LABELS = {
+  new:'Новый', in_progress:'В процессе', on_hold:'Отложен', served:'Обслужен', rejected:'Отказ'
+};
+const STATUS_ORDER = ['new','in_progress','on_hold','served','rejected'];
+
+let currentFilter = '';
+let searchQuery = '';
+
+// ── Утилиты ───────────────────────────────────────────────────────────────────
+function api(path, opts={}){
+  return fetch(API + path, {
+    credentials:'include',
+    headers:{'Content-Type':'application/json'},
+    ...opts
+  });
+}
+function toast(msg, isErr){
+  const t = document.getElementById('toast');
+  t.textContent = msg; t.classList.toggle('err', !!isErr); t.classList.add('show');
+  clearTimeout(t._t); t._t = setTimeout(()=>t.classList.remove('show'), 2600);
+}
+function esc(s){ return (s==null?'':String(s)).replace(/[&<>"']/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+function fmtDate(iso){
+  try{ const d=new Date(iso); return d.toLocaleString('ru-RU',{day:'2-digit',month:'2-digit',year:'numeric',hour:'2-digit',minute:'2-digit'});}catch{return iso||'';}
+}
+
+// ── Аутентификация ────────────────────────────────────────────────────────────
+async function checkSession(){
+  try{
+    const r = await api('/api/me');
+    if(r.ok){ const me = await r.json(); showApp(me.username); return true; }
+  }catch{}
+  showLogin(); return false;
+}
+function showLogin(){ document.getElementById('login-screen').classList.remove('hidden'); document.getElementById('app').classList.add('hidden'); }
+function showApp(username){
+  document.getElementById('login-screen').classList.add('hidden');
+  document.getElementById('app').classList.remove('hidden');
+  document.getElementById('who').textContent = username ? ('👤 ' + username) : '';
+  loadAll();
+}
+
+document.getElementById('login-btn').addEventListener('click', doLogin);
+document.getElementById('login-password').addEventListener('keydown', e=>{ if(e.key==='Enter') doLogin(); });
+document.getElementById('login-username').addEventListener('keydown', e=>{ if(e.key==='Enter') doLogin(); });
+
+async function doLogin(){
+  const username = document.getElementById('login-username').value.trim();
+  const password = document.getElementById('login-password').value;
+  const err = document.getElementById('login-err'); err.textContent='';
+  try{
+    const r = await api('/api/login',{method:'POST',body:JSON.stringify({username,password})});
+    if(r.ok){ const d = await r.json(); showApp(d.username); }
+    else { const d = await r.json().catch(()=>({})); err.textContent = d.error || 'Не удалось войти'; }
+  }catch(e){ err.textContent = 'Сервер недоступен. Запущен ли бэкенд?'; }
+}
+
+document.getElementById('logout-btn').addEventListener('click', async ()=>{
+  try{ await api('/api/logout',{method:'POST'}); }catch{}
+  showLogin();
+});
+
+// ── Загрузка данных ───────────────────────────────────────────────────────────
+async function loadStats(){
+  try{
+    const r = await api('/api/stats'); if(!r.ok) return;
+    const s = await r.json();
+    document.getElementById('st-total').textContent = s.total ?? 0;
+    document.getElementById('st-new').textContent = s.new ?? 0;
+    document.getElementById('st-in_progress').textContent = s.in_progress ?? 0;
+    document.getElementById('st-on_hold').textContent = s.on_hold ?? 0;
+    document.getElementById('st-served').textContent = s.served ?? 0;
+  }catch{}
+}
+
+async function loadLeads(){
+  const params = new URLSearchParams();
+  if(currentFilter) params.set('status', currentFilter);
+  if(searchQuery) params.set('q', searchQuery);
+  const tbody = document.getElementById('tbody');
+  try{
+    const r = await api('/api/leads?'+params.toString());
+    if(r.status===401){ showLogin(); return; }
+    if(!r.ok){ toast('Ошибка загрузки', true); return; }
+    const rows = await r.json();
+    renderRows(rows);
+  }catch(e){ toast('Сервер недоступен', true); }
+}
+
+function loadAll(){ loadStats(); loadLeads(); }
+
+// ── Рендер строк ──────────────────────────────────────────────────────────────
+function renderRows(rows){
+  const tbody = document.getElementById('tbody');
+  const empty = document.getElementById('empty');
+  tbody.innerHTML='';
+  empty.classList.toggle('hidden', rows.length>0);
+
+  rows.forEach(row=>{
+    const tr = document.createElement('tr');
+    tr.dataset.id = row.id;
+
+    // Клиент
+    const tdWho = document.createElement('td');
+    tdWho.setAttribute('data-label','Клиент');
+    tdWho.innerHTML = `<div class="who-name">${esc(row.full_name)}</div>
+      <div class="who-sub">${esc(row.email||'—')}${row.phone?(' · '+esc(row.phone)):''}</div>`;
+
+    // Вопрос
+    const tdMsg = document.createElement('td');
+    tdMsg.setAttribute('data-label','Вопрос');
+    tdMsg.innerHTML = `<div>${esc(row.subject||'—')}</div>
+      ${row.message?`<div class="who-sub">${esc(row.message)}</div>`:''}`;
+
+    // Статус (селект, реально меняет в БД)
+    const tdStatus = document.createElement('td');
+    tdStatus.setAttribute('data-label','Статус');
+    const sel = document.createElement('select');
+    sel.className = 'status-select st-'+row.status;
+    STATUS_ORDER.forEach(s=>{
+      const o=document.createElement('option'); o.value=s; o.textContent=STATUS_LABELS[s];
+      if(s===row.status) o.selected=true; sel.appendChild(o);
+    });
+    sel.addEventListener('change', ()=>updateLead(row.id,{status:sel.value}, ()=>{
+      sel.className='status-select st-'+sel.value; loadStats();
+    }));
+    tdStatus.appendChild(sel);
+
+    // Оценка
+    const tdRate = document.createElement('td');
+    tdRate.setAttribute('data-label','Оценка');
+    tdRate.appendChild(buildStars(row.id, row.rating||0));
+
+    // Комментарий
+    const tdComment = document.createElement('td');
+    tdComment.setAttribute('data-label','Комментарий');
+    const box = document.createElement('div'); box.className='comment-box';
+    const ta = document.createElement('textarea'); ta.value = row.admin_comment||''; ta.placeholder='Заметка по клиенту…';
+    const saveRow = document.createElement('div'); saveRow.className='save-row';
+    const btn = document.createElement('button'); btn.className='btn-sm'; btn.textContent='Сохранить';
+    const tag = document.createElement('span'); tag.className='saved-tag'; tag.textContent='✓ сохранено';
+    btn.addEventListener('click', ()=>updateLead(row.id,{admin_comment:ta.value}, ()=>{
+      tag.classList.add('show'); setTimeout(()=>tag.classList.remove('show'),1500);
+    }));
+    saveRow.appendChild(btn); saveRow.appendChild(tag);
+    box.appendChild(ta); box.appendChild(saveRow);
+    tdComment.appendChild(box);
+
+    // Дата
+    const tdDate = document.createElement('td');
+    tdDate.setAttribute('data-label','Дата');
+    tdDate.className='nowrap muted';
+    tdDate.textContent = fmtDate(row.created_at);
+
+    tr.append(tdWho, tdMsg, tdStatus, tdRate, tdComment, tdDate);
+    tbody.appendChild(tr);
+  });
+}
+
+function buildStars(id, rating){
+  const wrap = document.createElement('div'); wrap.className='stars';
+  for(let i=1;i<=5;i++){
+    const s=document.createElement('span'); s.className='star'+(i<=rating?' on':''); s.textContent='★'; s.dataset.v=i;
+    s.addEventListener('click', ()=>{
+      const newVal = (i===rating && i===1) ? 0 : i; // клик по той же 1-й звезде сбрасывает
+      updateLead(id,{rating:newVal}, ()=>{
+        [...wrap.children].forEach((st,idx)=>st.classList.toggle('on', idx<newVal));
+        rating=newVal;
+      });
+    });
+    wrap.appendChild(s);
+  }
+  return wrap;
+}
+
+// ── Обновление клиента ────────────────────────────────────────────────────────
+async function updateLead(id, patch, onOk){
+  try{
+    const r = await api('/api/leads/'+id, {method:'PATCH', body:JSON.stringify(patch)});
+    if(r.status===401){ showLogin(); return; }
+    if(!r.ok){ const d=await r.json().catch(()=>({})); toast(d.error||'Не удалось обновить', true); return; }
+    onOk && onOk();
+    toast('Сохранено');
+  }catch{ toast('Сервер недоступен', true); }
+}
+
+// ── Фильтры / поиск ───────────────────────────────────────────────────────────
+document.getElementById('filter').addEventListener('click', e=>{
+  const b=e.target.closest('button'); if(!b) return;
+  [...e.currentTarget.children].forEach(x=>x.classList.remove('active'));
+  b.classList.add('active'); currentFilter=b.dataset.f; loadLeads();
+});
+let searchT;
+document.getElementById('search').addEventListener('input', e=>{
+  clearTimeout(searchT); searchQuery=e.target.value.trim();
+  searchT=setTimeout(loadLeads, 300);
+});
+document.getElementById('refresh').addEventListener('click', loadAll);
+
+// ── Старт ─────────────────────────────────────────────────────────────────────
+checkSession();
+</script>
+</body>
+</html>
