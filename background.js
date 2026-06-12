@@ -231,23 +231,37 @@ function mkTex(w, h, fn) {
 
 // ── Общие текстуры ────────────────────────────────────────────────────────────
 const floorTex = mkTex(256, 256, (ctx, w, h) => {
-  ctx.fillStyle = '#787878';
+  // Нейтральный ковролин/плитка с лёгким шумом — реалистичнее плоского серого
+  ctx.fillStyle = '#6f7176';
   ctx.fillRect(0, 0, w, h);
-  ctx.strokeStyle = '#585858';
+  // мелкий шум-крапинка
+  for (let n = 0; n < 1400; n++) {
+    const v = 95 + Math.random() * 40;
+    ctx.fillStyle = `rgba(${v},${v},${v + 4},0.10)`;
+    ctx.fillRect(Math.random() * w, Math.random() * h, 2, 2);
+  }
+  // швы плитки
+  ctx.strokeStyle = 'rgba(60,62,66,0.6)';
   ctx.lineWidth = 2;
-  for (let x = 0; x <= w; x += 64) { ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, h); ctx.stroke(); }
-  for (let y = 0; y <= h; y += 64) { ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(w, y); ctx.stroke(); }
+  for (let x = 0; x <= w; x += 128) { ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, h); ctx.stroke(); }
+  for (let y = 0; y <= h; y += 128) { ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(w, y); ctx.stroke(); }
 });
 floorTex.wrapS = floorTex.wrapT = THREE.RepeatWrapping;
-floorTex.repeat.set(4, 4);
+floorTex.repeat.set(3, 3);
 
 const ceilTex = mkTex(256, 256, (ctx, w, h) => {
-  ctx.fillStyle = '#dce0e8';
+  // Подвесной потолок: светлые панели Armstrong с тонкой сеткой
+  ctx.fillStyle = '#eef0f3';
   ctx.fillRect(0, 0, w, h);
-  ctx.strokeStyle = '#b0b8c4';
-  ctx.lineWidth = 1;
+  ctx.strokeStyle = '#c4c9d0';
+  ctx.lineWidth = 3;
   for (let x = 0; x <= w; x += 64) { ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, h); ctx.stroke(); }
   for (let y = 0; y <= h; y += 64) { ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(w, y); ctx.stroke(); }
+  // лёгкая текстура панелей
+  for (let n = 0; n < 600; n++) {
+    ctx.fillStyle = 'rgba(200,206,214,0.18)';
+    ctx.fillRect(Math.random() * w, Math.random() * h, 2, 2);
+  }
 });
 ceilTex.wrapS = ceilTex.wrapT = THREE.RepeatWrapping;
 ceilTex.repeat.set(4, 3);
@@ -265,16 +279,16 @@ const matFloor    = new THREE.MeshStandardMaterial({ map: floorTex, roughness: 0
 const matCeil     = new THREE.MeshStandardMaterial({ map: ceilTex, roughness: 0.9 });
 const glassMat = HQ
   ? new THREE.MeshPhysicalMaterial({
-      color: 0x0d2a5e, roughness: 0.04, metalness: 0,
-      transmission: 0.72, opacity: 0.85, transparent: true,
-      ior: 1.5, reflectivity: 0.6, side: THREE.DoubleSide
+      color: 0x16314f, roughness: 0.06, metalness: 0.1,
+      transmission: 0.62, opacity: 0.9, transparent: true,
+      ior: 1.45, reflectivity: 0.7, side: THREE.DoubleSide
     })
   : new THREE.MeshStandardMaterial({  // дешёвое стекло без transmission-пасса
-      color: 0x12386e, roughness: 0.12, metalness: 0.6,
-      opacity: 0.55, transparent: true, side: THREE.DoubleSide
+      color: 0x24486e, roughness: 0.14, metalness: 0.55,
+      opacity: 0.6, transparent: true, side: THREE.DoubleSide
     });
-const frameMat    = new THREE.MeshStandardMaterial({ color: 0x223355, roughness: 0.3, metalness: 0.7 });
-const wfMat       = new THREE.MeshStandardMaterial({ color: 0x1a3366, roughness: 0.2, metalness: 0.8 });
+const frameMat    = new THREE.MeshStandardMaterial({ color: 0x3a4654, roughness: 0.35, metalness: 0.65 });
+const wfMat       = new THREE.MeshStandardMaterial({ color: 0x2a3f5c, roughness: 0.25, metalness: 0.7 });
 const closedGlass = HQ
   ? new THREE.MeshPhysicalMaterial({
       color: 0x1a3a6e, roughness: 0.03, metalness: 0,
@@ -301,6 +315,176 @@ const geoClkFace = new THREE.CircleGeometry(0.22, isMobile ? 16 : 32);
 const geoClkRim  = new THREE.TorusGeometry(0.22, 0.025, 6, isMobile ? 16 : 32);
 const geoClkHH   = new THREE.BoxGeometry(0.03, 0.13, 0.02);
 const geoClkMH   = new THREE.BoxGeometry(0.018, 0.18, 0.02);
+
+// ── Общие геометрии/материалы мебели (создаются ОДИН раз, шарятся на всех этажах) ──
+// Производительность: переиспользование geometry+material делает 15 заполненных
+// этажей дешёвыми — добавляются только лёгкие Mesh-инстансы, а culling прячет дальние.
+const fseg = isMobile ? 6 : 10;
+// Геометрии
+const G = {
+  deskTop:  new THREE.BoxGeometry(1.5, 0.05, 0.75),
+  deskLeg:  new THREE.BoxGeometry(0.05, 0.72, 0.05),
+  monitor:  new THREE.BoxGeometry(0.6, 0.36, 0.025),
+  monStand: new THREE.BoxGeometry(0.18, 0.16, 0.03),
+  chairSeat:new THREE.BoxGeometry(0.48, 0.06, 0.48),
+  chairBack:new THREE.BoxGeometry(0.46, 0.46, 0.05),
+  chairPost:new THREE.CylinderGeometry(0.03, 0.03, 0.38, fseg),
+  partition:new THREE.BoxGeometry(0.04, 1.1, 1.4),
+  cabinet:  new THREE.BoxGeometry(0.5, 1.1, 0.45),
+  rackBody: new THREE.BoxGeometry(0.7, 2.4, 0.9),
+  rackFront:new THREE.BoxGeometry(0.62, 2.2, 0.04),
+  table:    new THREE.BoxGeometry(2.6, 0.06, 1.1),
+  tableLeg: new THREE.BoxGeometry(0.06, 0.72, 0.06),
+  sofaBase: new THREE.BoxGeometry(2.0, 0.22, 0.7),
+  sofaBack: new THREE.BoxGeometry(2.0, 0.4, 0.14),
+  sofaSeat: new THREE.BoxGeometry(2.0, 0.12, 0.7),
+  rug:      new THREE.PlaneGeometry(3.0, 2.2),
+  plantPot: new THREE.CylinderGeometry(0.13, 0.10, 0.26, fseg),
+  plantBush:new THREE.SphereGeometry(0.26, fseg, Math.max(4, fseg - 2)),
+  deskScreenTV: new THREE.PlaneGeometry(0.56, 0.32),
+  pendant:  new THREE.BoxGeometry(2.2, 0.05, 0.12),
+};
+// Материалы (нейтральная офисная палитра — реалистичнее, чем яркие цвета)
+const M = {
+  deskWood:  new THREE.MeshStandardMaterial({ color: 0xb9a98c, roughness: 0.6, metalness: 0.0 }),
+  deskWhite: new THREE.MeshStandardMaterial({ color: 0xe8e6e0, roughness: 0.5, metalness: 0.0 }),
+  metal:     new THREE.MeshStandardMaterial({ color: 0x9aa0a8, roughness: 0.35, metalness: 0.75 }),
+  darkMetal: new THREE.MeshStandardMaterial({ color: 0x2b3038, roughness: 0.4, metalness: 0.7 }),
+  chair:     new THREE.MeshStandardMaterial({ color: 0x23262e, roughness: 0.8, metalness: 0.05 }),
+  chairAcc:  new THREE.MeshStandardMaterial({ color: 0x35506e, roughness: 0.7, metalness: 0.05 }),
+  screenOff: new THREE.MeshStandardMaterial({ color: 0x10141c, roughness: 0.25, metalness: 0.3 }),
+  screenOn:  new THREE.MeshStandardMaterial({ color: 0x0a1830, roughness: 0.2, metalness: 0.2, emissive: 0x1f4fa8, emissiveIntensity: 0.5 }),
+  partition: new THREE.MeshStandardMaterial({ color: 0xc9cdd4, roughness: 0.85, metalness: 0.0, transparent: true, opacity: 0.55 }),
+  cabinet:   new THREE.MeshStandardMaterial({ color: 0xd8d4cc, roughness: 0.7, metalness: 0.05 }),
+  rack:      new THREE.MeshStandardMaterial({ color: 0x191c22, roughness: 0.5, metalness: 0.5 }),
+  rackLED:   new THREE.MeshStandardMaterial({ color: 0x0c2a18, roughness: 0.4, emissive: 0x18c060, emissiveIntensity: 0.7 }),
+  sofa:      new THREE.MeshStandardMaterial({ color: 0x2a3445, roughness: 0.9, metalness: 0.02 }),
+  sofaSeat:  new THREE.MeshStandardMaterial({ color: 0x394760, roughness: 0.88, metalness: 0.02 }),
+  rug:       new THREE.MeshStandardMaterial({ color: 0x2f3a52, roughness: 1.0 }),
+  plantPot:  new THREE.MeshStandardMaterial({ color: 0x6a4a32, roughness: 0.85 }),
+  plant:     new THREE.MeshStandardMaterial({ color: 0x356b32, roughness: 0.9 }),
+  pendant:   new THREE.MeshStandardMaterial({ color: 0xd0d4dc, roughness: 0.5, metalness: 0.3 }),
+  pendantLED:new THREE.MeshStandardMaterial({ color: 0xffffff, emissive: 0xfff4e0, emissiveIntensity: 1.0, roughness: 1 }),
+};
+
+// Помощник: добавить mesh из общей геометрии/материала
+function put(g, geo, mat, x, y, z, ry) {
+  const m = new THREE.Mesh(geo, mat);
+  m.position.set(x, y, z);
+  if (ry) m.rotation.y = ry;
+  g.add(m);
+  return m;
+}
+
+// Рабочее место (стол + монитор + стул) — собирается из общих кусков
+function addDesk(g, x, z, ry, lit) {
+  ry = ry || 0;
+  const c = Math.cos(ry), s = Math.sin(ry);
+  const tx = (dx, dz) => x + dx * c - dz * s;
+  const tz = (dx, dz) => z + dx * s + dz * c;
+  put(g, G.deskTop, M.deskWood, x, 0.74, z, ry);
+  put(g, G.deskLeg, M.metal, tx(-0.65, 0.3), 0.36, tz(-0.65, 0.3), ry);
+  put(g, G.deskLeg, M.metal, tx( 0.65, 0.3), 0.36, tz( 0.65, 0.3), ry);
+  put(g, G.deskLeg, M.metal, tx(-0.65,-0.3), 0.36, tz(-0.65,-0.3), ry);
+  put(g, G.deskLeg, M.metal, tx( 0.65,-0.3), 0.36, tz( 0.65,-0.3), ry);
+  put(g, G.monStand, M.darkMetal, tx(0, -0.22), 0.86, tz(0, -0.22), ry);
+  put(g, G.monitor, lit ? M.screenOn : M.screenOff, tx(0, -0.28), 1.12, tz(0, -0.28), ry);
+  // стул
+  put(g, G.chairSeat, M.chair, tx(0, 0.55), 0.50, tz(0, 0.55), ry);
+  put(g, G.chairBack, M.chairAcc, tx(0, 0.78), 0.78, tz(0, 0.78), ry);
+  put(g, G.chairPost, M.metal, tx(0, 0.55), 0.27, tz(0, 0.55), ry);
+}
+
+function addPlant(g, x, z) {
+  put(g, G.plantPot, M.plantPot, x, 0.13, z);
+  put(g, G.plantBush, M.plant, x, 0.42, z);
+  put(g, G.plantBush, M.plant, x + 0.12, 0.36, z + 0.06);
+}
+
+
+// ── Наполнение этажа по типу (опенспейс / переговорная / серверная / лобби) ────
+// Все объекты — из общих геометрий/материалов. Свет НЕ добавляем пофайлово
+// (используем общий ambient/hemisphere) — это ключ к производительности.
+function furnishFloor(g, type, i) {
+  // Светящаяся «панель» на потолке для каждого типа (дешёвый emissive-меш)
+  put(g, G.pendant, M.pendantLED, -1.6, RH - 0.06, -0.6);
+  put(g, G.pendant, M.pendantLED,  1.6, RH - 0.06, -0.6);
+
+  if (type === 'open') {
+    // Опенспейс: ряды рабочих мест + перегородки + растения
+    const rows = isMobile ? 2 : 3;
+    const lit = (i % 2 === 0); // часть мониторов «включена»
+    for (let r = 0; r < rows; r++) {
+      const zr = -2.4 + r * 2.2;
+      if (isMobile) {
+        addDesk(g, -2.2, zr, 0, lit);
+        addDesk(g,  2.2, zr, 0, !lit);
+      } else {
+        addDesk(g, -3.0, zr, 0, lit);
+        addDesk(g,  0.0, zr, 0, lit);
+        addDesk(g,  3.0, zr, 0, !lit);
+        put(g, G.partition, M.partition, -1.5, 0.55, zr + 1.0);
+      }
+    }
+    addPlant(g, -4.3, 3.0);
+    if (!isMobile) addPlant(g, 4.3, -3.0);
+
+  } else if (type === 'meeting') {
+    // Переговорная: длинный стол, стулья по бокам, экран на стене, ковёр
+    const rug = put(g, G.rug, M.rug, 0, 0.01, 0);
+    rug.rotation.x = -Math.PI / 2;
+    put(g, G.table, M.deskWhite, 0, 0.74, 0);
+    put(g, G.tableLeg, M.metal, -1.1, 0.36, -0.45);
+    put(g, G.tableLeg, M.metal,  1.1, 0.36, -0.45);
+    put(g, G.tableLeg, M.metal, -1.1, 0.36,  0.45);
+    put(g, G.tableLeg, M.metal,  1.1, 0.36,  0.45);
+    const chairs = isMobile ? 4 : 6;
+    for (let c = 0; c < chairs; c++) {
+      const cx = -1.4 + c * (2.8 / (chairs - 1));
+      put(g, G.chairSeat, M.chair, cx, 0.50, -0.95);
+      put(g, G.chairBack, M.chairAcc, cx, 0.78, -1.15);
+      put(g, G.chairSeat, M.chair, cx, 0.50, 0.95);
+      put(g, G.chairBack, M.chairAcc, cx, 0.78, 1.15);
+    }
+    // экран презентации на задней стене
+    const scr = put(g, new THREE.PlaneGeometry(2.2, 1.25), M.screenOn, 0, 2.1, -RD / 2 + 0.06);
+    addPlant(g, 4.3, 3.0);
+
+  } else if (type === 'server') {
+    // Серверная: ряды стоек с зелёными LED, прохладный свет
+    const cols = isMobile ? 3 : 5;
+    for (let c = 0; c < cols; c++) {
+      const cx = -3.6 + c * (7.2 / (cols - 1));
+      put(g, G.rackBody, M.rack, cx, 1.2, -1.6);
+      put(g, G.rackFront, M.rackLED, cx, 1.2, -1.6 + 0.47);
+      put(g, G.rackBody, M.rack, cx, 1.2, 1.6);
+      put(g, G.rackFront, M.rackLED, cx, 1.2, 1.6 - 0.47);
+    }
+
+  } else if (type === 'lobby') {
+    // Лобби/зона отдыха: диваны, журнальный стол, растения, ковёр
+    const rug = put(g, G.rug, M.rug, 0, 0.01, 0.4);
+    rug.rotation.x = -Math.PI / 2;
+    put(g, G.sofaBase, M.sofa, -1.2, 0.11, 1.4, Math.PI / 2);
+    put(g, G.sofaSeat, M.sofaSeat, -1.2, 0.28, 1.4, Math.PI / 2);
+    put(g, G.sofaBack, M.sofa, -1.55, 0.42, 1.4, Math.PI / 2);
+    put(g, G.sofaBase, M.sofa, 1.2, 0.11, 1.4, Math.PI / 2);
+    put(g, G.sofaSeat, M.sofaSeat, 1.2, 0.28, 1.4, Math.PI / 2);
+    put(g, G.sofaBack, M.sofa, 1.55, 0.42, 1.4, Math.PI / 2);
+    put(g, G.table, M.darkMetal, 0, 0.4, 1.4);
+    put(g, G.cabinet, M.cabinet, -4.2, 0.55, -3.0);
+    put(g, G.cabinet, M.cabinet,  4.2, 0.55, -3.0);
+    addPlant(g, -4.3, 2.8);
+    addPlant(g,  4.3, 2.8);
+    addPlant(g,  0.0, -3.2);
+  }
+}
+
+// Назначение типа этажу. Этаж 13 — детальный офис (строится отдельно), его пропускаем.
+// Этаж 0 — входная зона (лобби). Остальные — вперемежку.
+const FLOOR_TYPES = ['lobby', 'open', 'meeting', 'open', 'server', 'open', 'meeting',
+                     'open', 'server', 'open', 'meeting', 'open', 'lobby', 'office',
+                     'open', 'meeting'];
 
 // ── Построение одного этажа ───────────────────────────────────────────────────
 const floorGroups = [];
@@ -422,11 +606,17 @@ function buildFloor(i) {
     const d = new THREE.Mesh(geoLampDiff, lampMat);
     d.position.set(lx, RH - 0.075, lz);
     g.add(d);
-    // На слабых устройствах освещаем только офисный этаж (13) — экономим десятки источников
+    // На слабых устройствах освещаем только офисный этаж (13) — экономим десятки источников.
+    // Споты дорогие → на слабых используем дешёвые point-light'ы.
     if (!lowPower || i === 13) {
-      const pl = i === 13
-        ? new THREE.SpotLight(0xfff5d0, 5.0, 10, Math.PI / 2.5, 0.5, 1.2)
-        : new THREE.PointLight(0xfff5d0, 1.5, 8);
+      let pl;
+      if (i === 13) {
+        pl = lowPower
+          ? new THREE.PointLight(0xfff5d0, 1.1, 9)
+          : new THREE.SpotLight(0xfff5d0, 5.0, 10, Math.PI / 2.5, 0.5, 1.2);
+      } else {
+        pl = new THREE.PointLight(0xfff5d0, 1.5, 8);
+      }
       pl.position.set(lx, RH - 0.12, lz);
       if (pl.target) { pl.target.position.set(lx, 0, lz); g.add(pl.target); }
       pl.castShadow = (HQ && i === 0);
@@ -434,20 +624,31 @@ function buildFloor(i) {
     }
   });
 
-  // Часы
-  const face = new THREE.Mesh(geoClkFace, clockFaceMat);
-  face.position.set(2.8, 3.0, -RD / 2 + 0.04);
-  g.add(face);
-  const rim = new THREE.Mesh(geoClkRim, clockRimMat);
-  rim.position.set(2.8, 3.0, -RD / 2 + 0.05);
-  g.add(rim);
-  const hh = new THREE.Mesh(geoClkHH, clockHndMat);
-  hh.position.set(2.8, 3.07, -RD / 2 + 0.06);
-  g.add(hh);
-  const mh = new THREE.Mesh(geoClkMH, clockHndMat);
-  mh.position.set(2.83, 3.09, -RD / 2 + 0.06);
-  mh.rotation.z = -0.5;
-  g.add(mh);
+  // Часы (на офисном этаже №13 не ставим — их перекрывает доска)
+  if (i !== 13) {
+    const face = new THREE.Mesh(geoClkFace, clockFaceMat);
+    face.position.set(2.8, 3.0, -RD / 2 + 0.04);
+    g.add(face);
+    const rim = new THREE.Mesh(geoClkRim, clockRimMat);
+    rim.position.set(2.8, 3.0, -RD / 2 + 0.05);
+    g.add(rim);
+    const hh = new THREE.Mesh(geoClkHH, clockHndMat);
+    hh.position.set(2.8, 3.07, -RD / 2 + 0.06);
+    g.add(hh);
+    const mh = new THREE.Mesh(geoClkMH, clockHndMat);
+    mh.position.set(2.83, 3.09, -RD / 2 + 0.06);
+    mh.rotation.z = -0.5;
+    g.add(mh);
+  }
+
+  // Наполнение интерьера по типу этажа (кроме офиса №13 — он строится отдельно)
+  const ftype = FLOOR_TYPES[i] || 'open';
+  if (ftype !== 'office') {
+    const furn = new THREE.Group();
+    furnishFloor(furn, ftype, i);
+    g.add(furn);
+    g.userData.furniture = furn; // для отдельного culling по дистанции
+  }
 
   scene.add(g);
   floorGroups.push(g);
@@ -638,10 +839,12 @@ for (let i = 0; i < FLOORS; i++) buildFloor(i);
         x + mx, wbY - wbH / 2 + 0.025, wbZ + 0.06, 6
       )
     );
-    // Мягкая подсветка доски
-    const bl = new THREE.PointLight(0xeaf2ff, 0.5, 4.5);
-    bl.position.set(x, wbY + 0.3, wbZ + 1.2);
-    g.add(bl);
+    // Мягкая подсветка доски — только на мощных (на мобиле экономим источники)
+    if (HQ) {
+      const bl = new THREE.PointLight(0xeaf2ff, 0.5, 4.5);
+      bl.position.set(x, wbY + 0.3, wbZ + 1.2);
+      g.add(bl);
+    }
   });
 
   // Переключение языка 3D-надписей на досках (зовётся из script.js)
@@ -691,9 +894,11 @@ for (let i = 0; i < FLOORS; i++) buildFloor(i);
     tvMesh.position.set(RW / 2 - 0.065, tvY, tvZ);
     g.add(tvMesh);
     bx(0.22, 0.07, 0.07, mLeg, RW / 2 - 0.22, tvY, tvZ);
-    const tvLight = new THREE.PointLight(0x1840c0, 1.2, 4.5);
-    tvLight.position.set(RW / 2 - 1.2, tvY, tvZ);
-    g.add(tvLight);
+    if (HQ) {
+      const tvLight = new THREE.PointLight(0x1840c0, 1.2, 4.5);
+      tvLight.position.set(RW / 2 - 1.2, tvY, tvZ);
+      g.add(tvLight);
+    }
   }
 
   // Кухня (пропускаем на мобиле)
@@ -720,7 +925,9 @@ for (let i = 0; i < FLOORS; i++) buildFloor(i);
   });
 
   // Доп. светильники (этаж 13). Корпуса дешёвые — оставляем все.
-  // Реальные источники: 6 спотов на мощных, 2 спота + заливка на слабых.
+  // Реальные источники света офиса.
+  // Споты дорогие, поэтому на слабых устройствах их НЕ ставим вообще —
+  // освещение даёт point-светильник-заливка ниже + общий ambient/hemisphere.
   const lampPositions = [
     [-3.2, RH - 0.03, -2.0], [0, RH - 0.03, -2.0], [3.0, RH - 0.03, -2.0],
     [-3.2, RH - 0.03,  1.5], [0, RH - 0.03,  1.5], [3.0, RH - 0.03,  1.5]
@@ -731,19 +938,19 @@ for (let i = 0; i < FLOORS; i++) buildFloor(i);
       lx, ly, lz
     );
     bx(0.16, 0.020, 1.0, lampMat, lx, ly - 0.034, lz);
-    // На слабых ставим спот лишь на 2 светильника (индексы 0 и 4)
-    if (HQ || idx === 0 || idx === 4) {
-      const pl = new THREE.SpotLight(0xfff8e8, HQ ? 3.8 : 5.5, 11, Math.PI / 2.3, 0.55, 1.2);
+    // Споты только на мощных устройствах (HQ), и лишь часть из них
+    if (HQ && (idx === 0 || idx === 2 || idx === 4)) {
+      const pl = new THREE.SpotLight(0xfff8e8, 3.8, 11, Math.PI / 2.3, 0.55, 1.2);
       pl.position.set(lx, ly - 0.05, lz);
       pl.target.position.set(lx, 0, lz);
       g.add(pl);
       g.add(pl.target);
     }
   });
-  // Заливающий свет офиса на слабых устройствах (компенсирует убранные споты)
+  // Заливающий свет офиса на слабых устройствах (вместо спотов)
   if (lowPower) {
-    const fill = new THREE.PointLight(0xfff4e0, 1.4, 16);
-    fill.position.set(0, RH - 0.4, 0);
+    const fill = new THREE.PointLight(0xfff4e0, 1.6, 18);
+    fill.position.set(0, RH - 0.4, -0.3);
     g.add(fill);
   }
 
@@ -751,8 +958,10 @@ for (let i = 0; i < FLOORS; i++) buildFloor(i);
 })();
 
 // ── Освещение ─────────────────────────────────────────────────────────────────
-scene.add(new THREE.AmbientLight(0x2a3a5a, lowPower ? 1.35 : 0.7));
-scene.add(new THREE.HemisphereLight(0x4466aa, 0x111122, 0.5));
+// Базовый свет повышен: интерьеры всех этажей теперь обставлены, но БЕЗ
+// пофайловых источников (ради fps), поэтому полагаемся на ambient+hemisphere.
+scene.add(new THREE.AmbientLight(0xd8e2f0, lowPower ? 1.15 : 0.85));
+scene.add(new THREE.HemisphereLight(0xbcd2ee, 0x40444c, 0.85));
 
 // ── Вывески (этажи 14 и 13) ───────────────────────────────────────────────────
 function makeSignTex(lines, color) {
@@ -822,9 +1031,14 @@ window.sceneTargets = {
 function updateFloorVisibility() {
   const camY = camera.position.y;
   const reach = isMobile ? 80 : 90;
+  // Мебель видна только вблизи. На мобиле — практически только текущий этаж
+  // (этажи кратны RH=4, поэтому порог 5 оставляет 1 этаж), чтобы в офисе не
+  // рендерились ещё и соседние обставленные этажи — это и давало лаги.
+  const furnReach = isMobile ? 5 : 22;
   floorGroups.forEach((grp, i) => {
     const dist = Math.abs(i * RH - camY);
     grp.visible = dist < reach;
+    if (grp.userData.furniture) grp.userData.furniture.visible = dist < furnReach;
   });
 }
 
@@ -842,10 +1056,30 @@ scene.traverse(obj => {
 });
 
 // ── Resize ────────────────────────────────────────────────────────────────────
-window.addEventListener('resize', () => {
-  camera.aspect = window.innerWidth / window.innerHeight;
+// Resize: на мобиле скрытие/появление адресной строки постоянно дёргает resize
+// (меняется только высота) → если каждый раз делать setSize, это вызывает
+// переаллокацию буфера, артефакты и просадки. Поэтому реагируем только на
+// заметные изменения и с дебаунсом.
+let lastW = window.innerWidth, lastH = window.innerHeight, resizeTimer = null;
+function doResize() {
+  const w = window.innerWidth, h = window.innerHeight;
+  camera.aspect = w / h;
   camera.updateProjectionMatrix();
-  renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.setSize(w, h);
+  lastW = w; lastH = h;
+}
+window.addEventListener('resize', () => {
+  const w = window.innerWidth, h = window.innerHeight;
+  // Игнорируем мелкие изменения высоты от URL-бара (ширина та же, dH небольшой)
+  if (w === lastW && Math.abs(h - lastH) < 120) {
+    // только обновим аспект без переаллокации буфера (дёшево)
+    camera.aspect = w / h;
+    camera.updateProjectionMatrix();
+    lastH = h;
+    return;
+  }
+  clearTimeout(resizeTimer);
+  resizeTimer = setTimeout(doResize, 150);
 });
 
 // Инициальная позиция камеры

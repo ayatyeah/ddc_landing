@@ -4,9 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="0f233e17-2d2f-42b4-97cb-1a010a814983" name="Changes" comment="v3">
-      <change beforePath="$PROJECT_DIR$/background.js" beforeDir="false" />
-    </list>
+    <list default="true" id="0f233e17-2d2f-42b4-97cb-1a010a814983" name="Changes" comment="v3.1 mobile fixx" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -76,6 +74,11 @@
     &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
 }</component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\YeahAyat\Videos\ddc_landing" />
+    </key>
+  </component>
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
@@ -94,7 +97,7 @@
       <workItem from="1781171700069" duration="19000" />
       <workItem from="1781171745211" duration="1452000" />
       <workItem from="1781173737254" duration="822000" />
-      <workItem from="1781246878145" duration="633000" />
+      <workItem from="1781246878145" duration="709000" />
     </task>
     <task id="LOCAL-00001" summary="docker">
       <option name="closed" value="true" />
@@ -136,7 +139,15 @@
       <option name="project" value="LOCAL" />
       <updated>1781246903274</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="v3.1 mobile fixx">
+      <option name="closed" value="true" />
+      <created>1781247699475</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1781247699475</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -157,7 +168,8 @@
     <MESSAGE value="docker" />
     <MESSAGE value="mobile burger navbar" />
     <MESSAGE value="v3" />
-    <option name="LAST_COMMIT_MESSAGE" value="v3" />
+    <MESSAGE value="v3.1 mobile fixx" />
+    <option name="LAST_COMMIT_MESSAGE" value="v3.1 mobile fixx" />
   </component>
   <component name="github-copilot-workspace">
     <instructionFileLocations>
