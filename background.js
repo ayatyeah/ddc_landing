@@ -19,9 +19,12 @@ const lowPower = isMobile
 const HQ = !lowPower; // high quality
 
 // ── Renderer ──────────────────────────────────────────────────────────────────
-const renderer = new THREE.WebGLRenderer({ antialias: HQ, powerPreference: 'high-performance' });
-// Пиксель-рейтио — главный рычаг нагрузки. На слабых ограничиваем жёстко.
-renderer.setPixelRatio(Math.min(window.devicePixelRatio, lowPower ? 1.0 : (isMobile ? 1.5 : 1.75)));
+// Антиалиасинг включаем И на мобиле — иначе «лесенки» на гранях зданий.
+// MSAA на телефоне дороже, но сцена статичная по геометрии, поэтому терпимо.
+const renderer = new THREE.WebGLRenderer({ antialias: true, powerPreference: 'high-performance' });
+// Пиксель-рейтио: на мобиле поднимаем до 1.5 (резкость текста/граней), но не выше,
+// чтобы не плодить пиксели на плотных экранах. Это баланс «гладко, но не лагает».
+renderer.setPixelRatio(Math.min(window.devicePixelRatio, isMobile ? 1.5 : (lowPower ? 1.25 : 1.75)));
 renderer.setSize(window.innerWidth, window.innerHeight);
 renderer.shadowMap.enabled = HQ;              // тени только на мощных
 renderer.shadowMap.type = THREE.PCFShadowMap;
@@ -32,7 +35,11 @@ document.getElementById('canvas-wrap').appendChild(renderer.domElement);
 
 // ── Scene ─────────────────────────────────────────────────────────────────────
 const scene = new THREE.Scene();
-scene.fog = new THREE.Fog(0xbcd6ea, lowPower ? 60 : 110, lowPower ? 150 : 280);
+// Туман отодвинут далеко, чтобы фон НЕ чернел. Цвет = цвет неба у горизонта,
+// поэтому даже на пределе видимости всё растворяется в светлой дымке, а не в темноте.
+scene.fog = new THREE.Fog(0xbcd6ea, isMobile ? 120 : 140, isMobile ? 320 : 360);
+// Фоновый цвет сцены = небо у горизонта: гарантирует, что фон никогда не чёрный
+scene.background = new THREE.Color(0x9cc8e8);
 
 // ── Sky (дневное небо) ────────────────────────────────────────────────────────
 {
@@ -77,8 +84,10 @@ scene.fog = new THREE.Fog(0xbcd6ea, lowPower ? 60 : 110, lowPower ? 150 : 280);
 }
 
 // ── Облака (объёмные «клубы дыма» из мягких спрайтов) ─────────────────────────
+// На мобиле облака ОТКЛЮЧЕНЫ полностью: прозрачные спрайты дают сильный overdraw,
+// что было главной причиной лагов на телефоне. Небо остаётся чистым и светлым.
 const cloudSprites = []; // для дрейфа в render loop
-{
+if (!isMobile) {
   // Мягкая текстура одного клуба: радиальный градиент с рваным краем
   function makePuffTexture() {
     const S = 128;
@@ -807,11 +816,15 @@ window.sceneTargets = {
 };
 
 // ── Frustum culling по этажам ─────────────────────────────────────────────────
+// Раньше дистанция была мала (26) и на общем плане половина башни исчезала —
+// выглядело как «чернеющий фон». Теперь радиус покрывает всю башню (высота ~64),
+// а геометрия этажей дешёвая (боксы/плоскости), дорогое (свет/стекло/облака) уже урезано.
 function updateFloorVisibility() {
   const camY = camera.position.y;
+  const reach = isMobile ? 80 : 90;
   floorGroups.forEach((grp, i) => {
     const dist = Math.abs(i * RH - camY);
-    grp.visible = dist < (lowPower ? 26 : 60);
+    grp.visible = dist < reach;
   });
 }
 
@@ -843,22 +856,37 @@ camera.lookAt(cf0.tgt);
 // ── Render loop ───────────────────────────────────────────────────────────────
 let t = 0;
 let pulseFrame = 0;
+let prevTime = performance.now();
+// Коэффициент сглаживания камеры (1/сек). Чем больше — тем «жёстче» камера
+// следует за скроллом. На мобиле выше, чтобы не было «резинового» отставания,
+// которое на просадках fps читается как рывки.
+const CAM_K = isMobile ? 9 : 6;
 
 function animate() {
   requestAnimationFrame(animate);
-  t += 0.012;
+
+  // Дельта времени в секундах (с защитой от скачков после сворачивания вкладки)
+  const now = performance.now();
+  let dt = (now - prevTime) / 1000;
+  prevTime = now;
+  if (dt > 0.1) dt = 0.1;       // clamp: после паузы не «телепортируемся»
+  if (dt < 0.0001) dt = 0.0001;
+
+  t += dt;
 
   // Пульсация emissive (на слабых — через кадр)
   pulseFrame++;
   if (!lowPower || pulseFrame % 2 === 0) {
-    const v = 0.15 + Math.sin(t * 2.3) * 0.04;
+    const v = 0.15 + Math.sin(t * 1.6) * 0.04;
     pulseMeshes.forEach(m => { m.material.emissiveIntensity = v; });
   }
 
-  // Scroll-driven camera (читает window.scrollProgress из script.js)
+  // Scroll-driven camera — сглаживание, НЕЗАВИСИМОЕ от частоты кадров.
+  // alpha = 1 - e^(-k·dt): при любом fps камера движется одинаково плавно.
   const cf = getKeyframedCamera(window.scrollProgress || 0);
-  camPos.lerp(cf.pos, 0.06);
-  camTgt.lerp(cf.tgt, 0.06);
+  const alpha = 1 - Math.exp(-CAM_K * dt);
+  camPos.lerp(cf.pos, alpha);
+  camTgt.lerp(cf.tgt, alpha);
   camera.position.copy(camPos);
   camera.lookAt(camTgt);
 
