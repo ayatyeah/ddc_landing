@@ -209,7 +209,7 @@ app.patch('/api/leads/:id', auth, async (req, res) => {
 // Health-check
 app.get('/api/health', (req, res) => res.json({ ok: true }));
 
-app.listen(PORT, () => {
+app.listen(PORT, '0.0.0.0', () => {
   console.log(`ЦЦР backend слушает http://localhost:${PORT}`);
   console.log(`Админка: http://localhost:${PORT}/admin.html`);
 });

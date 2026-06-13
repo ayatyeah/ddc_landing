@@ -4,9 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="0f233e17-2d2f-42b4-97cb-1a010a814983" name="Changes" comment="v3.2 global optimization">
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
-    </list>
+    <list default="true" id="0f233e17-2d2f-42b4-97cb-1a010a814983" name="Changes" comment="v3.2 gitignore fix" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -101,7 +99,7 @@
       <workItem from="1781173737254" duration="822000" />
       <workItem from="1781246878145" duration="709000" />
       <workItem from="1781249825081" duration="1963000" />
-      <workItem from="1781360405072" duration="124000" />
+      <workItem from="1781360405072" duration="156000" />
     </task>
     <task id="LOCAL-00001" summary="docker">
       <option name="closed" value="true" />
@@ -159,7 +157,15 @@
       <option name="project" value="LOCAL" />
       <updated>1781249852953</updated>
     </task>
-    <option name="localTasksCounter" value="8" />
+    <task id="LOCAL-00008" summary="v3.2 gitignore fix">
+      <option name="closed" value="true" />
+      <created>1781360555508</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1781360555508</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -182,7 +188,8 @@
     <MESSAGE value="v3" />
     <MESSAGE value="v3.1 mobile fixx" />
     <MESSAGE value="v3.2 global optimization" />
-    <option name="LAST_COMMIT_MESSAGE" value="v3.2 global optimization" />
+    <MESSAGE value="v3.2 gitignore fix" />
+    <option name="LAST_COMMIT_MESSAGE" value="v3.2 gitignore fix" />
   </component>
   <component name="github-copilot-workspace">
     <instructionFileLocations>
