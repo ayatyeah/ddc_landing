@@ -6,10 +6,6 @@
   <component name="ChangeListManager">
     <list default="true" id="0f233e17-2d2f-42b4-97cb-1a010a814983" name="Changes" comment="v3.2 global optimization">
       <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/background.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/index.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/script.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/style.css" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -22,7 +18,7 @@
     </persistenceIdMap>
   </component>
   <component name="EmbeddingIndexingInfo">
-    <option name="cachedIndexableFilesCount" value="13" />
+    <option name="cachedIndexableFilesCount" value="23" />
     <option name="fileBasedEmbeddingIndicesEnabled" value="true" />
   </component>
   <component name="Git.Settings">
@@ -105,6 +101,7 @@
       <workItem from="1781173737254" duration="822000" />
       <workItem from="1781246878145" duration="709000" />
       <workItem from="1781249825081" duration="1963000" />
+      <workItem from="1781360405072" duration="124000" />
     </task>
     <task id="LOCAL-00001" summary="docker">
       <option name="closed" value="true" />
